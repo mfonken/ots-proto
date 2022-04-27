@@ -7,22 +7,40 @@
 
 #include <iostream>
 #include "ots_combine_demo.hpp"
+#include "opencv2/video/tracking.hpp"
+#include "opencv2/highgui.hpp"
+#include "opencv2/core/cvdef.h"
+
+#include "kalman2d.h"
+
+using namespace cv;
 
 const char * file_name = "/Users/matthew/Desktop/ots-cmbine.dat";
-SERCOM_Channel imu_channel = { -1, "/dev/tty.usbmodem14301", "/dev/tty.usbmodem14101", B115200, CS8, 0 };
+SERCOM_Channel imu_channel = { -1, "/dev/tty.usbmodem144201", "/dev/tty.usbmodem14101", B115200, CS8, 0 };
 
 CombineDemo::combine_utility_rate_t rates[] =
 {
-    { Combine::WEBCAM, 1 },
-    { Combine::IMU, 1 },
+    { Combine::WEBCAM, 10 },
+    { Combine::IMU, 10 },
 //    { Combine::KINETIC, 1 }
-    { Combine::COMBINE, 1 },
+    { Combine::COMBINE, 10 },
 };
+
+void show( cv::Mat m )
+{
+    while(true)
+    {
+    imshow( "", m );
+    waitKey(10);
+    }
+}
+
 
 int main(int argc, const char * argv[])
 {
-    kinetic_config_t config = { 0 };
     Environment env("CombineDemo");
+    
+    kinetic_config_t config = { 0 };
     Combine combine(&config, file_name, &imu_channel);
     CombineDemo demo(&env, &combine);
     
@@ -30,8 +48,10 @@ int main(int argc, const char * argv[])
     demo.Start();
     demo.ShowWebcam();
     
+    demo.TestRho(10);
 //    demo.TestIMU(1);
 //    demo.TestWebcam(30);
 //    demo.TestKinetic();
+//    demo.TestTracker();
     return 0;
 }

@@ -14,7 +14,8 @@
 #include "timestamp.h"
 #include "imu_utility.hpp"
 #include "kinetic_utility.hpp"
-#include "ots_comm.hpp"
+//#include "ots_comm.hpp"
+#include "detector_utility.hpp"
 
 #define DEBUG_CMB
 
@@ -37,6 +38,7 @@ public:
         IMU = 0,
         WEBCAM,
         COMBINE,
+        VIEWER,
         NUM_UTILITIES,
         KINETIC,
     } combine_utility_e;
@@ -54,11 +56,20 @@ public:
     WebcamUtility wcu;
     IMUUtility imu;
     KineticUtility kin;
+    RhoDetector det;
+    TrackerUtility tracker;
     
     Combine(kinetic_config_t * config, const char * file_name, SERCOM_Channel * imu_channel );
 
     TestInterface* GetUtility(combine_utility_e name);
     void UpdateIMUData();
     void UpdatePointData();
+    
+    void OnFrame( cv::Mat );
+    std::function<void(cv::Mat)> OnShow;
+    pthread_mutex_t frame_mutex;
+    cv::Mat frame;
+    bool new_frame;
+    bool new_processed_frame;
 };
 #endif /* ots_combine_hpp */

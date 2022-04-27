@@ -7,8 +7,12 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		3411406C27FA5DD0001D8B11 /* tracker_utility.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 3411406A27FA5DD0001D8B11 /* tracker_utility.cpp */; };
+		3411407228038282001D8B11 /* kalman2d.c in Sources */ = {isa = PBXBuildFile; fileRef = 3411407128038282001D8B11 /* kalman2d.c */; };
+		348858C9281248320029D7E7 /* tests.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 348858C7281248320029D7E7 /* tests.cpp */; };
 		34A7454127E7A84F00EDE4F5 /* ots_combine.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 34A7453F27E7A84F00EDE4F5 /* ots_combine.cpp */; };
-		34A7454A27E976DD00EDE4F5 /* tracking_utility.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 34A7454827E976DD00EDE4F5 /* tracking_utility.cpp */; };
+		34A7454E27EC214700EDE4F5 /* detector_utility.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 34A7454C27EC214700EDE4F5 /* detector_utility.cpp */; };
+		34AD02E92806969A00CD78D3 /* matrix.c in Sources */ = {isa = PBXBuildFile; fileRef = 34AD02E82806969A00CD78D3 /* matrix.c */; };
 		34B105FB27DD2F1600CBD20E /* imu_wrapper.c in Sources */ = {isa = PBXBuildFile; fileRef = 34B105F827DD2F1600CBD20E /* imu_wrapper.c */; };
 		34B105FC27DD2F1600CBD20E /* kinetic.c in Sources */ = {isa = PBXBuildFile; fileRef = 34B105F927DD2F1600CBD20E /* kinetic.c */; };
 		34B105FF27DD2FA100CBD20E /* ots_combine_demo.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 34B105FD27DD2FA100CBD20E /* ots_combine_demo.cpp */; };
@@ -23,7 +27,7 @@
 		34B8AF0027D413D300D76DB2 /* unfisheye.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 34B8AEE727D413D300D76DB2 /* unfisheye.cpp */; };
 		34B8AF0327D413D300D76DB2 /* environment.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 34B8AEF327D413D300D76DB2 /* environment.cpp */; };
 		34B8AF6127D420B300D76DB2 /* kalman.c in Sources */ = {isa = PBXBuildFile; fileRef = 34B8AF5827D420B300D76DB2 /* kalman.c */; };
-		34B8AF6227D420B300D76DB2 /* vector.c in Sources */ = {isa = PBXBuildFile; fileRef = 34B8AF5B27D420B300D76DB2 /* vector.c */; };
+		34B8AF6227D420B300D76DB2 /* vector3.c in Sources */ = {isa = PBXBuildFile; fileRef = 34B8AF5B27D420B300D76DB2 /* vector3.c */; };
 		34B8AF6327D420B300D76DB2 /* point.c in Sources */ = {isa = PBXBuildFile; fileRef = 34B8AF5E27D420B300D76DB2 /* point.c */; };
 		34B8AF6427D420B300D76DB2 /* quaternion.c in Sources */ = {isa = PBXBuildFile; fileRef = 34B8AF6027D420B300D76DB2 /* quaternion.c */; };
 		34E3582927D861B100047308 /* webcam_utility.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 34E3582727D861B100047308 /* webcam_utility.cpp */; };
@@ -43,10 +47,18 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		3411406A27FA5DD0001D8B11 /* tracker_utility.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = tracker_utility.cpp; sourceTree = "<group>"; };
+		3411406B27FA5DD0001D8B11 /* tracker_utility.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = tracker_utility.hpp; sourceTree = "<group>"; };
+		3411407028038282001D8B11 /* kalman2d.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = kalman2d.h; sourceTree = "<group>"; };
+		3411407128038282001D8B11 /* kalman2d.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = kalman2d.c; sourceTree = "<group>"; };
+		348858C7281248320029D7E7 /* tests.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = tests.cpp; sourceTree = "<group>"; };
+		348858C8281248320029D7E7 /* tests.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = tests.hpp; sourceTree = "<group>"; };
 		34A7453F27E7A84F00EDE4F5 /* ots_combine.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = ots_combine.cpp; sourceTree = "<group>"; };
 		34A7454027E7A84F00EDE4F5 /* ots_combine.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = ots_combine.hpp; sourceTree = "<group>"; };
-		34A7454827E976DD00EDE4F5 /* tracking_utility.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = tracking_utility.cpp; sourceTree = "<group>"; };
-		34A7454927E976DD00EDE4F5 /* tracking_utility.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = tracking_utility.hpp; sourceTree = "<group>"; };
+		34A7454C27EC214700EDE4F5 /* detector_utility.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = detector_utility.cpp; sourceTree = "<group>"; };
+		34A7454D27EC214700EDE4F5 /* detector_utility.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = detector_utility.hpp; sourceTree = "<group>"; };
+		34AD02E72806969A00CD78D3 /* matrix.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = matrix.h; sourceTree = "<group>"; };
+		34AD02E82806969A00CD78D3 /* matrix.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = matrix.c; sourceTree = "<group>"; };
 		34B105EF27DAFABB00CBD20E /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		34B105F327DB00D400CBD20E /* unilog.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = unilog.h; path = ../../../../../embedded/UniLog/unilog.h; sourceTree = "<group>"; };
 		34B105F527DD2F1600CBD20E /* kinetic_master.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = kinetic_master.h; sourceTree = "<group>"; };
@@ -86,11 +98,11 @@
 		34B8AF5727D420B300D76DB2 /* kalman.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = kalman.h; sourceTree = "<group>"; };
 		34B8AF5827D420B300D76DB2 /* kalman.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = kalman.c; sourceTree = "<group>"; };
 		34B8AF5A27D420B300D76DB2 /* point.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = point.h; sourceTree = "<group>"; };
-		34B8AF5B27D420B300D76DB2 /* vector.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = vector.c; sourceTree = "<group>"; };
+		34B8AF5B27D420B300D76DB2 /* vector3.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = vector3.c; sourceTree = "<group>"; };
 		34B8AF5C27D420B300D76DB2 /* quaternion.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = quaternion.h; sourceTree = "<group>"; };
 		34B8AF5D27D420B300D76DB2 /* qmath.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = qmath.h; sourceTree = "<group>"; };
 		34B8AF5E27D420B300D76DB2 /* point.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = point.c; sourceTree = "<group>"; };
-		34B8AF5F27D420B300D76DB2 /* vector.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = vector.h; sourceTree = "<group>"; };
+		34B8AF5F27D420B300D76DB2 /* vector3.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = vector3.h; sourceTree = "<group>"; };
 		34B8AF6027D420B300D76DB2 /* quaternion.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = quaternion.c; sourceTree = "<group>"; };
 		34E3582327D421B900047308 /* test_config.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = test_config.h; sourceTree = "<group>"; };
 		34E3582727D861B100047308 /* webcam_utility.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = webcam_utility.cpp; sourceTree = "<group>"; };
@@ -110,13 +122,36 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		34A7454727E9767D00EDE4F5 /* tracking */ = {
+		3411406927FA57D9001D8B11 /* ots */ = {
 			isa = PBXGroup;
 			children = (
-				34A7454827E976DD00EDE4F5 /* tracking_utility.cpp */,
-				34A7454927E976DD00EDE4F5 /* tracking_utility.hpp */,
+				34A7454027E7A84F00EDE4F5 /* ots_combine.hpp */,
+				34A7453F27E7A84F00EDE4F5 /* ots_combine.cpp */,
+				34B105FE27DD2FA100CBD20E /* ots_combine_demo.hpp */,
+				34B105FD27DD2FA100CBD20E /* ots_combine_demo.cpp */,
 			);
-			path = tracking;
+			path = ots;
+			sourceTree = "<group>";
+		};
+		348858CA2812486F0029D7E7 /* tests */ = {
+			isa = PBXGroup;
+			children = (
+				348858C8281248320029D7E7 /* tests.hpp */,
+				348858C7281248320029D7E7 /* tests.cpp */,
+			);
+			path = tests;
+			sourceTree = "<group>";
+		};
+		34A7454B27EC214700EDE4F5 /* detector */ = {
+			isa = PBXGroup;
+			children = (
+				3411406B27FA5DD0001D8B11 /* tracker_utility.hpp */,
+				3411406A27FA5DD0001D8B11 /* tracker_utility.cpp */,
+				34A7454D27EC214700EDE4F5 /* detector_utility.hpp */,
+				34A7454C27EC214700EDE4F5 /* detector_utility.cpp */,
+			);
+			name = detector;
+			path = ../../../../freeze/detector;
 			sourceTree = "<group>";
 		};
 		34B105F427DD2F1600CBD20E /* kinetic */ = {
@@ -224,6 +259,8 @@
 			children = (
 				34B8AF5727D420B300D76DB2 /* kalman.h */,
 				34B8AF5827D420B300D76DB2 /* kalman.c */,
+				3411407028038282001D8B11 /* kalman2d.h */,
+				3411407128038282001D8B11 /* kalman2d.c */,
 			);
 			path = filters;
 			sourceTree = "<group>";
@@ -236,8 +273,10 @@
 				34B8AF5A27D420B300D76DB2 /* point.h */,
 				34B8AF6027D420B300D76DB2 /* quaternion.c */,
 				34B8AF5C27D420B300D76DB2 /* quaternion.h */,
-				34B8AF5B27D420B300D76DB2 /* vector.c */,
-				34B8AF5F27D420B300D76DB2 /* vector.h */,
+				34B8AF5F27D420B300D76DB2 /* vector3.h */,
+				34B8AF5B27D420B300D76DB2 /* vector3.c */,
+				34AD02E72806969A00CD78D3 /* matrix.h */,
+				34AD02E82806969A00CD78D3 /* matrix.c */,
 			);
 			path = qmath;
 			sourceTree = "<group>";
@@ -265,12 +304,10 @@
 				34E3582327D421B900047308 /* test_config.h */,
 				34B105F327DB00D400CBD20E /* unilog.h */,
 				34F0ECC227C2C987001B3C57 /* main.cpp */,
-				34A7454027E7A84F00EDE4F5 /* ots_combine.hpp */,
-				34A7453F27E7A84F00EDE4F5 /* ots_combine.cpp */,
-				34B105FE27DD2FA100CBD20E /* ots_combine_demo.hpp */,
-				34B105FD27DD2FA100CBD20E /* ots_combine_demo.cpp */,
+				348858CA2812486F0029D7E7 /* tests */,
+				3411406927FA57D9001D8B11 /* ots */,
 				34B105F427DD2F1600CBD20E /* kinetic */,
-				34A7454727E9767D00EDE4F5 /* tracking */,
+				34A7454B27EC214700EDE4F5 /* detector */,
 				34B8AED427D413D300D76DB2 /* utilities */,
 			);
 			path = "ots-proto";
@@ -335,7 +372,6 @@
 			files = (
 				34B8AF0327D413D300D76DB2 /* environment.cpp in Sources */,
 				34B105FC27DD2F1600CBD20E /* kinetic.c in Sources */,
-				34A7454A27E976DD00EDE4F5 /* tracking_utility.cpp in Sources */,
 				34A7454127E7A84F00EDE4F5 /* ots_combine.cpp in Sources */,
 				34B8AEFB27D413D300D76DB2 /* serial_wrapper.cpp in Sources */,
 				34B8AF6327D420B300D76DB2 /* point.c in Sources */,
@@ -347,13 +383,18 @@
 				34B8AEFD27D413D300D76DB2 /* gaussian.cpp in Sources */,
 				34B8AF6127D420B300D76DB2 /* kalman.c in Sources */,
 				34B8AEFF27D413D300D76DB2 /* ring_buffer.c in Sources */,
+				34A7454E27EC214700EDE4F5 /* detector_utility.cpp in Sources */,
+				34AD02E92806969A00CD78D3 /* matrix.c in Sources */,
 				34B105FF27DD2FA100CBD20E /* ots_combine_demo.cpp in Sources */,
 				34F0ECC327C2C987001B3C57 /* main.cpp in Sources */,
-				34B8AF6227D420B300D76DB2 /* vector.c in Sources */,
+				34B8AF6227D420B300D76DB2 /* vector3.c in Sources */,
 				34B8AF0027D413D300D76DB2 /* unfisheye.cpp in Sources */,
+				3411407228038282001D8B11 /* kalman2d.c in Sources */,
 				34B105FB27DD2F1600CBD20E /* imu_wrapper.c in Sources */,
+				3411406C27FA5DD0001D8B11 /* tracker_utility.cpp in Sources */,
 				34B8AEFE27D413D300D76DB2 /* kalman.cpp in Sources */,
 				34B8AEFC27D413D300D76DB2 /* file_writer.cpp in Sources */,
+				348858C9281248320029D7E7 /* tests.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -474,6 +515,7 @@
 		34F0ECC727C2C987001B3C57 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				CLANG_CXX_LANGUAGE_STANDARD = "c++20";
 				CODE_SIGN_STYLE = Automatic;
 				HEADER_SEARCH_PATHS = "/usr/local/Cellar/opencv/4.5.3_2/include/**";
 				LIBRARY_SEARCH_PATHS = "/usr/local/Cellar/opencv/4.5.3_2/lib/**";
@@ -544,6 +586,7 @@
 		34F0ECC827C2C987001B3C57 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				CLANG_CXX_LANGUAGE_STANDARD = "c++20";
 				CODE_SIGN_STYLE = Automatic;
 				HEADER_SEARCH_PATHS = "/usr/local/Cellar/opencv/4.5.3_2/include/**";
 				LIBRARY_SEARCH_PATHS = "/usr/local/Cellar/opencv/4.5.3_2/lib/**";

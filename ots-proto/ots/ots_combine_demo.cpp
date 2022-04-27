@@ -46,17 +46,37 @@ void CombineDemo::ShowWebcam()
 {
     while(true)
     {
-        { LOCK(mutex)
-            if(combine->wcu.frame.cols > 0)
-            {
-                imshow("figure", combine->wcu.frame);
-            }
+        if(combine->new_processed_frame)
+        { LOCK(&combine->frame_mutex)
+            imshow("figure", combine->frame);
         }
         waitKey(10);
     }
 }
 
 /// TESTS
+void CombineDemo::TestRho(int rate)
+{
+    InitUtility(Combine::WEBCAM, rate);
+    Start();
+//    int n = 26;
+    while(true)
+    {
+        { //LOCK(mutex)
+            Mat m; //cv::imread("/Users/matthew/Desktop/PersonalResources/TestImages/frames/ellipse/" + to_string(n++) + ".png");//
+            threshold( combine->wcu.frame, m, IMAGE_THRESHOLD, 255, 0 );
+            if(m.cols > 0)
+            {
+                combine->det.perform(m);
+                combine->det.draw(m);
+                imshow("figure", m);
+            }
+        }
+        waitKey(1000 / rate);
+//        if(n > 26) n = 0;
+    }
+}
+
 void CombineDemo::TestWebcam(int rate)
 {
     pthread_mutex_t * mutex = InitUtility(Combine::WEBCAM, rate);
@@ -71,7 +91,7 @@ void CombineDemo::TestIMU(int rate)
     Start();
     
     imu_t * imu = &combine->imu.imu;
-    int i = 0;
+//    int i = 0;
     while(true)
     {
         { LOCK(mutex)
@@ -85,7 +105,7 @@ void CombineDemo::TestIMU(int rate)
 //            break;
 //        }
     }
-    sleep(1);
+//    sleep(1);
 }
 
 void CombineDemo::TestKinetic(int rate)
@@ -98,4 +118,10 @@ void CombineDemo::TestKinetic(int rate)
             printf("\n");
         }
     }
+}
+
+void CombineDemo::TestTracker(int rate)
+{
+    vector<Point2f> pts = { Point2f(0, 0) };
+    combine->det.tracker.Update(pts);
 }

@@ -8,6 +8,8 @@
 #ifndef ots_combine_demo_hpp
 #define ots_combine_demo_hpp
 
+#define IMAGE_THRESHOLD 165
+
 #include "ots_combine.hpp"
 
 class CombineDemo
@@ -18,7 +20,7 @@ public:
     typedef struct
     {
         Combine::combine_utility_e name;
-        pthread_mutex_t * mutex;
+        pthread_mutex_t mutex;
     } utility_mutex_t;
     
     typedef struct
@@ -35,9 +37,11 @@ public:
     
     void ShowWebcam();
     
+    void TestRho(int rate = 5);
     void TestWebcam(int rate = 5);
     void TestIMU(int rate = 5);
     void TestKinetic(int rate = 5);
+    void TestTracker(int rate = 5);
 };
 
 #endif /* ots_combine_demo_hpp */

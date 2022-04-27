@@ -8,10 +8,16 @@
 #include "ots_combine.hpp"
 
 using namespace cv;
+using namespace std::placeholders;
 
 Combine::Combine(kinetic_config_t * config, const char * file_name, SERCOM_Channel * imu_channel )
-: name("combine"), kin(config), comm(SFILE, file_name), imu(imu_channel)
+: name("combine"), kin(config), comm(SFILE, file_name), imu(imu_channel), new_frame(false), new_processed_frame(false)//, wcu("Cam", 1)
 {
+    if( pthread_mutex_init(&frame_mutex, NULL) != 0 )
+        printf( "mutex init failed\n" );
+    
+    wcu.OnFrame = std::bind(&Combine::OnFrame, this, _1);
+    
 }
 
 TestInterface* Combine::GetUtility(combine_utility_e name)
@@ -65,11 +71,25 @@ void Combine::UpdatePointData()
 void Combine::trigger()
 { LOCK(&mutex)
     UpdateIMUData();
-    UpdatePointData();
+//    UpdatePointData();
+//
+//    kin.trigger();
     
-    kin.trigger();
-    
-    LOG_CMB(DEBUG_1, "Combine::trigger\n");
+//    LOG_CMB(DEBUG_1, "Combine::trigger\n");
     string packet = "";
     comm.write(packet);
+    
+    if(new_frame)
+    { LOCK(&frame_mutex)
+        det.perform( frame );
+        det.draw( frame );
+        new_frame = false;
+        new_processed_frame = true;
+    }
+}
+
+void Combine::OnFrame(Mat m)
+{ LOCK(&frame_mutex)
+    frame = m.clone();
+    new_frame = true;
 }
