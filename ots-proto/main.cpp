@@ -20,10 +20,10 @@ SERCOM_Channel imu_channel = { -1, "/dev/tty.usbmodem144201", "/dev/tty.usbmodem
 
 CombineDemo::combine_utility_rate_t rates[] =
 {
-    { Combine::WEBCAM, 10 },
-    { Combine::IMU, 10 },
+    { Combine::WEBCAM, 30 },
+    { Combine::IMU, 30 },
 //    { Combine::KINETIC, 1 }
-    { Combine::COMBINE, 10 },
+    { Combine::COMBINE, 30 },
 };
 
 void show( cv::Mat m )
@@ -46,9 +46,9 @@ int main(int argc, const char * argv[])
     
     demo.Init(rates);
     demo.Start();
-    demo.ShowWebcam();
+    demo.ShowFrame(true);
     
-    demo.TestRho(10);
+//    demo.TestRho(10);
 //    demo.TestIMU(1);
 //    demo.TestWebcam(30);
 //    demo.TestKinetic();

@@ -17,7 +17,6 @@ Combine::Combine(kinetic_config_t * config, const char * file_name, SERCOM_Chann
         printf( "mutex init failed\n" );
     
     wcu.OnFrame = std::bind(&Combine::OnFrame, this, _1);
-    
 }
 
 TestInterface* Combine::GetUtility(combine_utility_e name)
@@ -45,6 +44,7 @@ TestInterface* Combine::GetUtility(combine_utility_e name)
 
 void Combine::init( void )
 {
+    LOG_CMB(DEBUG_1, "Initialized.\n");
 }
 
 string Combine::serialize( void )
@@ -59,37 +59,56 @@ void Combine::UpdateIMUData()
     ang3_t a = { imu_data.roll, imu_data.pitch, imu_data.yaw };
     quaternion_t o;
     Quaternion.fromEuler( &a, &o );
-    kin.UpdateIMUDate( &n, &o );
+    kin.UpdateIMUData( &n, &o );
+    
+//    LOG_CMB(DEBUG_2, "Grav: <%.2f, %.2f, %.2f> | Ori: <%.2f, %.2f, %.2f>\n", n.i, n.j, n.k, a.x, a.y, a.z);
 }
 
 void Combine::UpdatePointData()
 {
-//    kpoints_t points = rho.FetchPointData();
-//    kin.UpdatePointData(points.a, points.b);
+    kpoint_t A = { 0 }, B = { 0 };
+    { LOCK(&det.pts_mutex)
+        vector<Point2f> pts = det.pts;
+        if(pts.size() < 2) return;
+        
+        A = (kpoint_t) { pts[0].x, pts[0].y };
+        B = (kpoint_t) { pts[1].x, pts[1].y };
+    }
+    kin.UpdatePointData(&A, &B);
+    
+    LOG_CMB(DEBUG_2, "A: (%.2f, %.2f) | B: (%.2f, %.2f)\n", A.x, A.y, B.x, B.y);
 }
 
 void Combine::trigger()
-{ LOCK(&mutex)
-    UpdateIMUData();
-//    UpdatePointData();
-//
-//    kin.trigger();
-    
-//    LOG_CMB(DEBUG_1, "Combine::trigger\n");
-    string packet = "";
-    comm.write(packet);
-    
+{
+    LOG_CMB(DEBUG_1, "trigger\n");
+
+    // Update detection
     if(new_frame)
     { LOCK(&frame_mutex)
         det.perform( frame );
         det.draw( frame );
         new_frame = false;
         new_processed_frame = true;
+//        printf("\n");
+    }
+    
+    // Update kinetic
+    { LOCK(&mutex)
+        UpdateIMUData();
+        UpdatePointData();
+    
+//        kin.trigger();
+//
+//        string packet = "";
+//        comm.write(packet);
+        
     }
 }
 
 void Combine::OnFrame(Mat m)
 { LOCK(&frame_mutex)
     frame = m.clone();
+    new_processed_frame = false;
     new_frame = true;
 }

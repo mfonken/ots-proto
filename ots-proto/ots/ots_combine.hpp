@@ -43,11 +43,11 @@ public:
         KINETIC,
     } combine_utility_e;
     
-    typedef struct
-    {
-        kpoint_t a;
-        kpoint_t b;
-    } kpoints_t;
+//    typedef struct
+//    {
+//        kpoint_t a;
+//        kpoint_t b;
+//    } kpoints_t;
     
     void trigger( void );
     pthread_mutex_t mutex;

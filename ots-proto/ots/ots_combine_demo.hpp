@@ -9,13 +9,18 @@
 #define ots_combine_demo_hpp
 
 #define IMAGE_THRESHOLD 165
+#define FPS_RATE 1
 
 #include "ots_combine.hpp"
+#include "fps_utility.hpp"
 
 class CombineDemo
 {
     Combine * combine;
     Environment * env;
+    
+    FPSUtility fps;
+    
 public:    
     typedef struct
     {
@@ -36,6 +41,7 @@ public:
     pthread_mutex_t* InitUtility(Combine::combine_utility_e name, int rate);
     
     void ShowWebcam();
+    void ShowFrame(bool = false);
     
     void TestRho(int rate = 5);
     void TestWebcam(int rate = 5);

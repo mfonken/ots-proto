@@ -13,6 +13,8 @@ CombineDemo::CombineDemo(Environment * env, Combine* combine)
 {
     this->env = env;
     this->combine = combine;
+    
+    this->env->addTest( &fps, FPS_RATE );
 }
 
 void CombineDemo::Init(combine_utility_rate_t rates[Combine::NUM_UTILITIES])
@@ -45,12 +47,30 @@ pthread_mutex_t* CombineDemo::InitUtility(Combine::combine_utility_e name, int r
 void CombineDemo::ShowWebcam()
 {
     while(true)
-    {
-        if(combine->new_processed_frame)
-        { LOCK(&combine->frame_mutex)
-            imshow("figure", combine->frame);
-        }
+    { LOCK(&combine->wcu.mutex)
+        if(!combine->wcu.frame.empty())
+            imshow("figure", combine->wcu.frame);
         waitKey(10);
+    }
+}
+
+void CombineDemo::ShowFrame(bool show_processed)
+{
+    const double scale = 0.75;
+    while(true)
+    {
+        if((show_processed && combine->new_processed_frame) || (!show_processed && combine->new_frame))
+        { LOCK(&combine->frame_mutex)
+            Mat m;
+            if(!combine->frame.empty())
+            {
+                fps.Tick();
+                resize(combine->frame, m, Size(), scale, scale, INTER_LINEAR);
+                putText(m, to_string(fps.Get()), Point(3, 13), FONT_HERSHEY_DUPLEX, 0.5, Scalar(255, 255, 100));
+                imshow("figure", m);
+            }
+        }
+        waitKey(1);
     }
 }
 
@@ -82,7 +102,7 @@ void CombineDemo::TestWebcam(int rate)
     pthread_mutex_t * mutex = InitUtility(Combine::WEBCAM, rate);
     Start();
     printf("demo->%p\n", mutex);
-    ShowWebcam();
+    ShowFrame();
 }
 
 void CombineDemo::TestIMU(int rate)
