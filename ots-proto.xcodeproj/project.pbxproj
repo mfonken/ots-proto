@@ -13,6 +13,7 @@
 		34A7454127E7A84F00EDE4F5 /* ots_combine.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 34A7453F27E7A84F00EDE4F5 /* ots_combine.cpp */; };
 		34A7454E27EC214700EDE4F5 /* detector_utility.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 34A7454C27EC214700EDE4F5 /* detector_utility.cpp */; };
 		34AA518C281B9C7B007613C1 /* fps_utility.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 34AA518A281B9C7B007613C1 /* fps_utility.cpp */; };
+		34AA518F2820BDD2007613C1 /* orienter.c in Sources */ = {isa = PBXBuildFile; fileRef = 34AA518E2820BDD2007613C1 /* orienter.c */; };
 		34AD02E92806969A00CD78D3 /* matrix.c in Sources */ = {isa = PBXBuildFile; fileRef = 34AD02E82806969A00CD78D3 /* matrix.c */; };
 		34B105FB27DD2F1600CBD20E /* imu_wrapper.c in Sources */ = {isa = PBXBuildFile; fileRef = 34B105F827DD2F1600CBD20E /* imu_wrapper.c */; };
 		34B105FC27DD2F1600CBD20E /* kinetic.c in Sources */ = {isa = PBXBuildFile; fileRef = 34B105F927DD2F1600CBD20E /* kinetic.c */; };
@@ -60,6 +61,8 @@
 		34A7454D27EC214700EDE4F5 /* detector_utility.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = detector_utility.hpp; sourceTree = "<group>"; };
 		34AA518A281B9C7B007613C1 /* fps_utility.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = fps_utility.cpp; sourceTree = "<group>"; };
 		34AA518B281B9C7B007613C1 /* fps_utility.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = fps_utility.hpp; sourceTree = "<group>"; };
+		34AA518D2820BDD2007613C1 /* orienter.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = orienter.h; sourceTree = "<group>"; };
+		34AA518E2820BDD2007613C1 /* orienter.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = orienter.c; sourceTree = "<group>"; };
 		34AD02E72806969A00CD78D3 /* matrix.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = matrix.h; sourceTree = "<group>"; };
 		34AD02E82806969A00CD78D3 /* matrix.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = matrix.c; sourceTree = "<group>"; };
 		34B105EF27DAFABB00CBD20E /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -167,6 +170,8 @@
 				34B105F927DD2F1600CBD20E /* kinetic.c */,
 				34B1060527DE538500CBD20E /* kinetic_utility.hpp */,
 				34B1060427DE538500CBD20E /* kinetic_utility.cpp */,
+				34AA518D2820BDD2007613C1 /* orienter.h */,
+				34AA518E2820BDD2007613C1 /* orienter.c */,
 			);
 			name = kinetic;
 			path = ../../../../freeze/kinetic;
@@ -203,12 +208,12 @@
 		34B8AED727D413D300D76DB2 /* io */ = {
 			isa = PBXGroup;
 			children = (
-				34B8AEDD27D413D300D76DB2 /* file_writer.cpp */,
 				34B8AED927D413D300D76DB2 /* file_writer.hpp */,
-				34B8AEDA27D413D300D76DB2 /* sercom.c */,
+				34B8AEDD27D413D300D76DB2 /* file_writer.cpp */,
 				34B8AEDB27D413D300D76DB2 /* sercom.h */,
-				34B8AEDC27D413D300D76DB2 /* serial_wrapper.cpp */,
+				34B8AEDA27D413D300D76DB2 /* sercom.c */,
 				34B8AED827D413D300D76DB2 /* serial_wrapper.hpp */,
+				34B8AEDC27D413D300D76DB2 /* serial_wrapper.cpp */,
 			);
 			path = io;
 			sourceTree = "<group>";
@@ -233,8 +238,8 @@
 				34B8AEE927D413D300D76DB2 /* image_cpp_types.h */,
 				34B8AEEC27D413D300D76DB2 /* image_types.h */,
 				34B8AEE627D413D300D76DB2 /* opencv_master.h */,
-				34B8AEE727D413D300D76DB2 /* unfisheye.cpp */,
 				34B8AEED27D413D300D76DB2 /* unfisheye.hpp */,
+				34B8AEE727D413D300D76DB2 /* unfisheye.cpp */,
 				34E3582827D861B100047308 /* webcam_utility.hpp */,
 				34E3582727D861B100047308 /* webcam_utility.cpp */,
 			);
@@ -397,6 +402,7 @@
 				34B8AF0027D413D300D76DB2 /* unfisheye.cpp in Sources */,
 				3411407228038282001D8B11 /* kalman2d.c in Sources */,
 				34B105FB27DD2F1600CBD20E /* imu_wrapper.c in Sources */,
+				34AA518F2820BDD2007613C1 /* orienter.c in Sources */,
 				3411406C27FA5DD0001D8B11 /* tracker_utility.cpp in Sources */,
 				34B8AEFE27D413D300D76DB2 /* kalman.cpp in Sources */,
 				34B8AEFC27D413D300D76DB2 /* file_writer.cpp in Sources */,
@@ -523,8 +529,8 @@
 			buildSettings = {
 				CLANG_CXX_LANGUAGE_STANDARD = "c++20";
 				CODE_SIGN_STYLE = Automatic;
-				HEADER_SEARCH_PATHS = "/usr/local/Cellar/opencv/4.5.3_2/include/**";
-				LIBRARY_SEARCH_PATHS = "/usr/local/Cellar/opencv/4.5.3_2/lib/**";
+				HEADER_SEARCH_PATHS = "/usr/local/Cellar/opencv/4.5.5_2/include/**";
+				LIBRARY_SEARCH_PATHS = "/usr/local/Cellar/opencv/4.5.5_2/lib/**";
 				OTHER_LDFLAGS = (
 					"-I/usr/local/opt/opencv/include/opencv4",
 					"-L/usr/local/opt/opencv/lib",
@@ -594,8 +600,8 @@
 			buildSettings = {
 				CLANG_CXX_LANGUAGE_STANDARD = "c++20";
 				CODE_SIGN_STYLE = Automatic;
-				HEADER_SEARCH_PATHS = "/usr/local/Cellar/opencv/4.5.3_2/include/**";
-				LIBRARY_SEARCH_PATHS = "/usr/local/Cellar/opencv/4.5.3_2/lib/**";
+				HEADER_SEARCH_PATHS = "/usr/local/Cellar/opencv/4.5.5_2/include/**";
+				LIBRARY_SEARCH_PATHS = "/usr/local/Cellar/opencv/4.5.5_2/lib/**";
 				OTHER_LDFLAGS = (
 					"-I/usr/local/opt/opencv/include/opencv4",
 					"-L/usr/local/opt/opencv/lib",

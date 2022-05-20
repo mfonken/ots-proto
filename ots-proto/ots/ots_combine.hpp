@@ -37,10 +37,10 @@ public:
     {
         IMU = 0,
         WEBCAM,
+        KINETIC,
         COMBINE,
         VIEWER,
         NUM_UTILITIES,
-        KINETIC,
     } combine_utility_e;
     
 //    typedef struct

@@ -56,10 +56,10 @@ void Combine::UpdateIMUData()
 {
     IMUUtility::imu_data_t imu_data = imu.FetchIMUData();
     vec3_t n = { imu_data.accel[0], imu_data.accel[1], imu_data.accel[2] };
-    ang3_t a = { imu_data.roll, imu_data.pitch, imu_data.yaw };
-    quaternion_t o;
-    Quaternion.fromEuler( &a, &o );
-    kin.UpdateIMUData( &n, &o );
+    vec3_t a = { imu_data.roll, imu_data.pitch, imu_data.yaw };
+//    quaternion_t o;
+//    Quaternion.fromEuler( &a, &o );
+    kin.UpdateIMUData( &n, &a );
     
 //    LOG_CMB(DEBUG_2, "Grav: <%.2f, %.2f, %.2f> | Ori: <%.2f, %.2f, %.2f>\n", n.i, n.j, n.k, a.x, a.y, a.z);
 }
@@ -76,7 +76,7 @@ void Combine::UpdatePointData()
     }
     kin.UpdatePointData(&A, &B);
     
-    LOG_CMB(DEBUG_2, "A: (%.2f, %.2f) | B: (%.2f, %.2f)\n", A.x, A.y, B.x, B.y);
+//    LOG_CMB(DEBUG_2, "A: (%.2f, %.2f) | B: (%.2f, %.2f)\n", A.x, A.y, B.x, B.y);
 }
 
 void Combine::trigger()
@@ -108,6 +108,7 @@ void Combine::trigger()
 
 void Combine::OnFrame(Mat m)
 { LOCK(&frame_mutex)
+    LOG_CMB(DEBUG_1, "frame\n");
     frame = m.clone();
     new_processed_frame = false;
     new_frame = true;

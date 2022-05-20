@@ -16,16 +16,16 @@ FPSUtility::FPSUtility(string n)
 }
 
 void FPSUtility::init()
-{
-    
-}
+{}
 
 void FPSUtility::trigger()
 {
     double s = 0;
     for(double &ti : t) s += ti;
-    rate = (int)(1000.0 / s * (double)t.size());
+    rate = 1000.0 / s * (double)t.size();
     t.clear();
+    
+//    printf("Tick - %.2f\n", rate);
 }
 
 string FPSUtility::serialize()
@@ -38,9 +38,10 @@ void FPSUtility::Tick()
     now_t = TIMESTAMP();
     t.push_back(now_t - prv_t);
     prv_t = now_t;
+//    printf("%.2fms\n", prv_t - now_t);
 }
 
-int FPSUtility::Get()
+double FPSUtility::Get()
 {
     return rate;
 }

@@ -24,7 +24,7 @@ class FPSUtility : public TestInterface
     std::vector<double> t;
     double now_t;
     double prv_t;
-    int rate = 0;
+    double rate = 0;
     
 public:
     FPSUtility(string n = "fps");
@@ -32,7 +32,7 @@ public:
     void trigger();
     
     void Tick();
-    int Get();
+    double Get();
 };
 
 #endif /* fps_hpp */

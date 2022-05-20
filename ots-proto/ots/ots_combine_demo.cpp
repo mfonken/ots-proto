@@ -6,6 +6,7 @@
 //
 
 #include "ots_combine_demo.hpp"
+#include "unfisheye.hpp"
 
 using namespace cv;
 
@@ -14,7 +15,7 @@ CombineDemo::CombineDemo(Environment * env, Combine* combine)
     this->env = env;
     this->combine = combine;
     
-    this->env->addTest( &fps, FPS_RATE );
+    this->env->addTest( &fps, 1.0 );
 }
 
 void CombineDemo::Init(combine_utility_rate_t rates[Combine::NUM_UTILITIES])
@@ -44,6 +45,18 @@ pthread_mutex_t* CombineDemo::InitUtility(Combine::combine_utility_e name, int r
     return &utility->mutex;
 }
 
+void CombineDemo::HandleKey(char k)
+{
+    switch(k)
+    {
+        case ' ':
+            OrienterFunctions.Tare( &combine->kin.orienter);
+            break;
+        default:
+            break;
+    }
+}
+
 void CombineDemo::ShowWebcam()
 {
     while(true)
@@ -66,11 +79,18 @@ void CombineDemo::ShowFrame(bool show_processed)
             {
                 fps.Tick();
                 resize(combine->frame, m, Size(), scale, scale, INTER_LINEAR);
-                putText(m, to_string(fps.Get()), Point(3, 13), FONT_HERSHEY_DUPLEX, 0.5, Scalar(255, 255, 100));
-                imshow("figure", m);
+                putText(m, to_string((int)fps.Get()), Point(3, 13), FONT_HERSHEY_DUPLEX, 0.5, Scalar(255, 255, 100));
+                
+//                Rect crop(m.cols/2 - m.rows/2, 0, m.rows, m.rows);
+//                Mat M(m, crop);
+//                Mat U = Mat(M.rows, M.cols, M.type(), Scalar(255, 255, 255));
+//                invfisheye(M, U);
+                imshow("Demo", m);
             }
         }
-        waitKey(1);
+        char k = waitKey(10);
+        if(k > 0 && k != key_) HandleKey(k);
+        key_ = k;
     }
 }
 
@@ -130,12 +150,31 @@ void CombineDemo::TestIMU(int rate)
 
 void CombineDemo::TestKinetic(int rate)
 {
-    pthread_mutex_t * mutex = InitUtility(Combine::KINETIC, rate);
+    InitUtility(Combine::IMU, rate*2);
+    InitUtility(Combine::KINETIC, rate);
     Start();
+//    vec3_t g = { 0, 0, -1 };
+    int i = 0;
     while(true)
     {
-        { LOCK(mutex)
-            printf("\n");
+        vec3_t n, a;
+        { LOCK(&combine->imu.mutex)
+            IMUUtility::imu_data_t imu_data = combine->imu.FetchIMUData();
+            n = { imu_data.accel[0], imu_data.accel[1], imu_data.accel[2] };
+            a = { imu_data.roll, imu_data.pitch, imu_data.yaw };
+//            g = { imu_data.gravity[0], imu_data.gravity[1], imu_data.gravity[2] };
+        }
+        { LOCK(&combine->kin.orienter_data_mutex);
+            OrienterFunctions.Update( &combine->kin.orienter, &a );
+            ang3_t * r = &combine->kin.orienter.rotation;
+            ang3_t * rr = &combine->kin.orienter.rotation_raw;
+            LOG_KU(DEBUG_2, "<%.2f, %.2f, %.2f> | <%.2f, %.2f, %.2f>\n", rr->x, rr->y, rr->z, r->x, r->y, r->z);
+        }
+        waitKey(1000 / rate);
+        if( i++ % 5 == 0 )
+        {
+//            LOG_KU(DEBUG_2, "Tared: <%.2f, %.2f, %.2f>\n", g.i, g.j, g. k);
+            OrienterFunctions.Tare( &combine->kin.orienter );//, &g );
         }
     }
 }
