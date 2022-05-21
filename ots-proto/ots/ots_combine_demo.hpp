@@ -12,6 +12,7 @@
 
 #include "ots_combine.hpp"
 #include "fps_utility.hpp"
+#include <opencv2/viz/types.hpp>
 
 class CombineDemo
 {

@@ -25,7 +25,7 @@ CombineDemo::combine_utility_rate_t rates[] =
     { Combine::WEBCAM, 30 },
     { Combine::IMU, 30 },
     { Combine::COMBINE, 30 },
-    { Combine::KINETIC, 1 },
+    { Combine::KINETIC, 5 },
 };
 
 void show( cv::Mat m )

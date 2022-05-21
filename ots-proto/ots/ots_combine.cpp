@@ -56,7 +56,7 @@ void Combine::UpdateIMUData()
 {
     IMUUtility::imu_data_t imu_data = imu.FetchIMUData();
     vec3_t n = { imu_data.accel[0], imu_data.accel[1], imu_data.accel[2] };
-    vec3_t a = { imu_data.roll, imu_data.pitch, imu_data.yaw };
+    vec3_t a = { imu_data.pitch, imu_data.roll, imu_data.yaw };
 //    quaternion_t o;
 //    Quaternion.fromEuler( &a, &o );
     kin.UpdateIMUData( &n, &a );

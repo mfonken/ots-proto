@@ -7,6 +7,7 @@
 
 #include "ots_combine_demo.hpp"
 #include "unfisheye.hpp"
+#include <format>
 
 using namespace cv;
 
@@ -52,6 +53,9 @@ void CombineDemo::HandleKey(char k)
         case ' ':
             OrienterFunctions.Tare( &combine->kin.orienter);
             break;
+        case 'r':
+            combine->det.tracker.reorder();
+            break;
         default:
             break;
     }
@@ -70,6 +74,9 @@ void CombineDemo::ShowWebcam()
 void CombineDemo::ShowFrame(bool show_processed)
 {
     const double scale = 0.75;
+    sleep(1);
+    OrienterFunctions.Tare( &combine->kin.orienter );
+    
     while(true)
     {
         if((show_processed && combine->new_processed_frame) || (!show_processed && combine->new_frame))
@@ -81,10 +88,29 @@ void CombineDemo::ShowFrame(bool show_processed)
                 resize(combine->frame, m, Size(), scale, scale, INTER_LINEAR);
                 putText(m, to_string((int)fps.Get()), Point(3, 13), FONT_HERSHEY_DUPLEX, 0.5, Scalar(255, 255, 100));
                 
+//                // Unfisheye image
 //                Rect crop(m.cols/2 - m.rows/2, 0, m.rows, m.rows);
 //                Mat M(m, crop);
 //                Mat U = Mat(M.rows, M.cols, M.type(), Scalar(255, 255, 255));
 //                invfisheye(M, U);
+                
+                // Draw kinetic position
+                vec3_t p = combine->kin.GetPosition();
+                double* v = (double*)&p;
+                int x = 70;
+                Scalar rgb[] = { cv::viz::Color::red(), cv::viz::Color::green(), cv::viz::Color::blue()  };
+                for( int i = 0; i < 3; i++ )
+                {
+                    putText(m, format("%.2f", v[i] * 1000), Point(x * (i + 1), 13), FONT_HERSHEY_DUPLEX, 0.5, rgb[i]);
+                }
+                
+                // Draw crosshair
+                int l = 4, t = 1;
+                cv::viz::Color c = cv::viz::Color::celestial_blue ();
+                double w = m.cols/2, h = m.rows/2;
+                line( m, Point(w - l, h), Point(w + l, h), c, t);
+                line( m, Point(w, h - l), Point(w, h + l), c, t);
+                
                 imshow("Demo", m);
             }
         }
