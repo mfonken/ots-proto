@@ -55,6 +55,9 @@ public:
     void TestIMU(int rate = 5);
     void TestKinetic(int rate = 5);
     void TestTracker(int rate = 5);
+    
+    void Record(int seconds, int webcam_rate, int imu_rate, string path="~/Desktop");
+    void OnFrame(cv::Mat frame, double timestamp_ms);
 };
 
 #endif /* ots_combine_demo_hpp */

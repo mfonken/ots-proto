@@ -10,13 +10,13 @@
 using namespace cv;
 using namespace std::placeholders;
 
-Combine::Combine(kinetic_config_t * config, const char * file_name, SERCOM_Channel * imu_channel )
-: name("combine"), kin(config), comm(SFILE, file_name), imu(imu_channel), new_frame(false), new_processed_frame(false)//, wcu("Cam", 1)
+Combine::Combine(kinetic_config_t * config, const char * file_name, SERCOM_Channel * imu_channel, camera_intrinsics_t camera_intrinsics )
+: name("combine"), kin(config), comm(SFILE, file_name), imu(imu_channel), new_frame(false), new_processed_frame(false), wcu("webcam", camera_intrinsics, 1)
 {
     if( pthread_mutex_init(&frame_mutex, NULL) != 0 )
         printf( "mutex init failed\n" );
     
-    wcu.OnFrame = std::bind(&Combine::OnFrame, this, _1);
+    wcu.OnFrame = std::bind(&Combine::OnFrame, this, _1, _2);
 }
 
 TestInterface* Combine::GetUtility(combine_utility_e name)
@@ -70,9 +70,9 @@ void Combine::UpdatePointData()
     { LOCK(&det.pts_mutex)
         vector<Point2f> pts = det.pts;
         if(pts.size() < 2) return;
-        
-        A = (kpoint_t) { pts[0].x, pts[0].y };
-        B = (kpoint_t) { pts[1].x, pts[1].y };
+
+        unfisheyePixel(pts[0].x, pts[0].y, wcu.intrinsics, 3, &A.x, &A.y );
+        unfisheyePixel(pts[1].x, pts[1].y, wcu.intrinsics, 3, &B.x, &B.y );
     }
     kin.UpdatePointData(&A, &B);
     
@@ -98,7 +98,7 @@ void Combine::trigger()
         UpdateIMUData();
         UpdatePointData();
     
-//        kin.trigger();
+        kin.trigger();
 //
 //        string packet = "";
 //        comm.write(packet);
@@ -106,7 +106,7 @@ void Combine::trigger()
     }
 }
 
-void Combine::OnFrame(Mat m)
+void Combine::OnFrame(Mat m, double t_ns)
 { LOCK(&frame_mutex)
     LOG_CMB(DEBUG_1, "frame\n");
     frame = m.clone();

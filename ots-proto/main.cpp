@@ -18,13 +18,13 @@
 using namespace cv;
 
 const char * file_name = "/Users/matthew/Desktop/ots-cmbine.dat";
-SERCOM_Channel imu_channel = { -1, "/dev/tty.usbmodem144201", "/dev/tty.usbmodem14401", B115200, CS8, 0.1, 0 };
+SERCOM_Channel imu_channel = { -1, "/dev/tty.usbmodem144201", "/dev/tty.usbmodem144301", B115200, CS8, 0.1, 0 };
 
 CombineDemo::combine_utility_rate_t rates[] =
 {
-    { Combine::WEBCAM, 30 },
-    { Combine::IMU, 30 },
-    { Combine::COMBINE, 30 },
+    { Combine::WEBCAM, 15 },
+    { Combine::IMU, 15 },
+    { Combine::COMBINE, 15 },
     { Combine::KINETIC, 5 },
 };
 
@@ -48,19 +48,30 @@ int main(int argc, const char * argv[])
     
     Environment env("CombineDemo");
     kinetic_config_t config = { 1920, 1080, FOCAL_LENGTH, D_FIXED };
-    Combine combine(&config, file_name, &imu_channel);
+    camera_intrinsics_t camera_intrinsics =
+    {
+        {
+            { 463.77108700959, 0.0, 947.8159318593995 },
+            { 0.0, 463.62928545866953, 558.6748749917344 },
+            { 0.0, 0.0, 1.0 },
+        },
+        { -0.06666608728707157, -0.015936129419735538, 0.008432133073367098, -0.0029393030590729977 }
+    };
+    
+    Combine combine(&config, file_name, &imu_channel, camera_intrinsics);
     CombineDemo demo(&env, &combine);
     
-#ifndef TEST
+#ifdef TEST
+//    demo.TestRho(10);
+//    demo.TestIMU(100);
+    demo.TestWebcam(5);
+//    demo.TestKinetic(20);
+//    demo.TestTracker();
+//    demo.Record(45, 15, 30, "/Users/matthew/Desktop/dev/cam-imu-dataset");
+#else
     demo.Init(rates);
     demo.Start();
     demo.ShowFrame(true);
-#else
-//    demo.TestRho(10);
-//    demo.TestIMU(1);
-//    demo.TestWebcam(30);
-    demo.TestKinetic(20);
-//    demo.TestTracker();
 #endif
     
     return 0;

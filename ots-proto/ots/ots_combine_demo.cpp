@@ -96,9 +96,10 @@ void CombineDemo::ShowFrame(bool show_processed)
                 
                 // Draw kinetic position
                 vec3_t p = combine->kin.GetPosition();
+//                p.i = -p.i;
                 double* v = (double*)&p;
                 int x = 70;
-                Scalar rgb[] = { cv::viz::Color::red(), cv::viz::Color::green(), cv::viz::Color::blue()  };
+                Scalar rgb[] = { cv::viz::Color::red(), cv::viz::Color::green(), cv::viz::Color::celestial_blue()  };
                 for( int i = 0; i < 3; i++ )
                 {
                     putText(m, format("%.2f", v[i] * 1000), Point(x * (i + 1), 13), FONT_HERSHEY_DUPLEX, 0.5, rgb[i]);
@@ -148,7 +149,7 @@ void CombineDemo::TestWebcam(int rate)
     pthread_mutex_t * mutex = InitUtility(Combine::WEBCAM, rate);
     Start();
     printf("demo->%p\n", mutex);
-    ShowFrame();
+    ShowWebcam();
 }
 
 void CombineDemo::TestIMU(int rate)
@@ -158,10 +159,11 @@ void CombineDemo::TestIMU(int rate)
     
     imu_t * imu = &combine->imu.imu;
 //    int i = 0;
+    double s = TIMESTAMP(TIME_SEC);
     while(true)
     {
         { LOCK(mutex)
-            printf("p%.2f r%.2f y%.2f\n", imu->pitch, imu->roll, imu->yaw);
+            printf("%.2fs: p%.2f r%.2f y%.2f\n", TIMESTAMP(TIME_SEC) - s, imu->pitch, imu->roll, imu->yaw);
         }
         waitKey(1000 / rate);
         
@@ -210,3 +212,90 @@ void CombineDemo::TestTracker(int rate)
     vector<Point2f> pts = { Point2f(0, 0) };
     combine->det.tracker.Update(pts);
 }
+
+void CombineDemo::Record(int seconds, int webcam_rate, int imu_rate, string path) {
+    // Environment
+    InitUtility(Combine::WEBCAM, webcam_rate);
+    InitUtility(Combine::IMU, imu_rate);
+    Start();
+    
+//    using namespace std::placeholders;
+//    combine->wcu.OnFrame = std::bind(&CombineDemo::OnFrame, this, _1, _2);
+    
+    // Wait for first camera frame
+    while(combine->wcu.GetFrame().empty())
+        waitKey(100);
+    
+    // Cycles
+    int i = 0;
+    double start_ms = TIMESTAMP(TIME_MS);
+    double duration_ms = (double)seconds * 1000.0;
+    
+    // Data
+    IMUUtility::imu_data_t imu_data;
+    Mat img;
+    double img_timestamp_ms = 0.0;
+    FileWriter imu_writer;
+    string imu_file = string(path + "/imu0.csv");
+    imu_writer.init(imu_file.c_str());
+    string img_path = string(path + "/cam0");
+    
+    int cam_interval = imu_rate / webcam_rate;
+    sleep(2);
+    
+    double time = 0;
+    while(time < duration_ms)
+    {
+        waitKey( 1000.0 / imu_rate );
+        time = TIMESTAMP(TIME_MS) - start_ms;
+        printf("%.1fs\n", time * 1.0e-3);
+        i++;
+        { LOCK(&combine->imu.mutex)
+            imu_data = combine->imu.FetchIMUData();
+        }
+        if(i % cam_interval == 0)
+        { LOCK(&combine->wcu.mutex)
+            img = combine->wcu.frame.clone();
+            img_timestamp_ms = combine->wcu.frame_time_ms;
+            fps.Tick();
+        }
+        
+        if(imu_data.timestamp_ms < 1 || img_timestamp_ms < start_ms ) continue;
+        
+        // IMU Output
+        std::stringstream imu_s;
+        long imu_timestamp_ns = (long)( ( imu_data.timestamp_ms - start_ms ) * 1.0e6 );
+        imu_s << imu_timestamp_ns;
+        for( int i = 0; i < 3; i++ ) imu_s << "," << imu_data.gyro[i];
+        for( int i = 0; i < 3; i++ ) imu_s << "," << imu_data.accel[i];
+        imu_s << "\n";
+        imu_writer.trigger(imu_s.str(), true);
+        
+        // Img Output
+        if(i % cam_interval == 0)
+        {
+            std::stringstream img_s;
+            long img_timestamp_ns = (long)( ( combine->wcu.frame_time_ms - start_ms ) * 1.0e6 );
+            img_s << img_path << "/" << img_timestamp_ns << ".png";
+            imwrite(img_s.str(), img);
+//            putText(img, img_s.str(), Point(2, 20), 1, FONT_HERSHEY_DUPLEX, Scalar(255, 255, 255));
+//            imshow("fig", img);
+//            printf("img: %s %.2f\n", img_s.str().c_str(), fps.Get());
+        }
+//        printf("imu: %s", imu_s.str().c_str());
+        
+    }
+    printf("Ran %d cycles\n", i);
+}
+
+//void CombineDemo::OnFrame(Mat img, double timestamp_ms)
+//{
+//    if(img_path.length() == 0 || start_ms == 0) return;
+////    img = frame.clone();
+//    std::stringstream img_s;
+//    long img_timestamp_ns = (long)( ( combine->wcu.frame_time_ms - start_ms ) * 1.0e6 );
+//    img_s << img_path << "/" << img_timestamp_ns << ".png";
+////    putText(img, img_s.str(), Point(2, 20), 1, FONT_HERSHEY_DUPLEX, Scalar(255, 255, 255));
+////            imwrite(img_s.str(), img);
+//    printf("img: %s\n", img_s.str().c_str());
+//}

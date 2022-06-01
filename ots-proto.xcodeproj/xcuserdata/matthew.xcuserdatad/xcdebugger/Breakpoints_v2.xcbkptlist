@@ -7,16 +7,32 @@
       <BreakpointProxy
          BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
          <BreakpointContent
-            uuid = "5DC8DDAA-B3C3-4E09-B50E-07C954AAD1F5"
+            uuid = "8CB215BB-F09F-4580-9532-E6B5022A3326"
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "../../../freeze/utilities/image/webcam_utility.cpp"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "57"
+            endingLineNumber = "57"
+            landmarkName = "WebcamUtility::trigger()"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "61CAE281-2FC6-4077-BD5F-B08D2152428F"
             shouldBeEnabled = "Yes"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
-            filePath = "../../../freeze/utilities/sensors/imu_wrapper.c"
+            filePath = "../../../freeze/kinetic/kinetic.c"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "147"
-            endingLineNumber = "147"
-            landmarkName = "Read_SERCOM_IMU_Packet(imu)"
+            startingLineNumber = "96"
+            endingLineNumber = "96"
+            landmarkName = "Kinetic_Quaternions(k, O)"
             landmarkType = "9">
          </BreakpointContent>
       </BreakpointProxy>

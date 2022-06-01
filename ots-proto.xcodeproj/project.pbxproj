@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		3411406C27FA5DD0001D8B11 /* tracker_utility.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 3411406A27FA5DD0001D8B11 /* tracker_utility.cpp */; };
 		3411407228038282001D8B11 /* kalman2d.c in Sources */ = {isa = PBXBuildFile; fileRef = 3411407128038282001D8B11 /* kalman2d.c */; };
+		3433ECBB2847008700AA34D6 /* fisheye.c in Sources */ = {isa = PBXBuildFile; fileRef = 3433ECBA2847008700AA34D6 /* fisheye.c */; };
 		348858C9281248320029D7E7 /* tests.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 348858C7281248320029D7E7 /* tests.cpp */; };
 		34A7454127E7A84F00EDE4F5 /* ots_combine.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 34A7453F27E7A84F00EDE4F5 /* ots_combine.cpp */; };
 		34A7454E27EC214700EDE4F5 /* detector_utility.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 34A7454C27EC214700EDE4F5 /* detector_utility.cpp */; };
@@ -25,7 +26,6 @@
 		34B8AEFC27D413D300D76DB2 /* file_writer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 34B8AEDD27D413D300D76DB2 /* file_writer.cpp */; };
 		34B8AEFD27D413D300D76DB2 /* gaussian.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 34B8AEE027D413D300D76DB2 /* gaussian.cpp */; };
 		34B8AEFE27D413D300D76DB2 /* kalman.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 34B8AEE127D413D300D76DB2 /* kalman.cpp */; };
-		34B8AEFF27D413D300D76DB2 /* ring_buffer.c in Sources */ = {isa = PBXBuildFile; fileRef = 34B8AEE427D413D300D76DB2 /* ring_buffer.c */; };
 		34B8AF0027D413D300D76DB2 /* unfisheye.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 34B8AEE727D413D300D76DB2 /* unfisheye.cpp */; };
 		34B8AF0327D413D300D76DB2 /* environment.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 34B8AEF327D413D300D76DB2 /* environment.cpp */; };
 		34B8AF6127D420B300D76DB2 /* kalman.c in Sources */ = {isa = PBXBuildFile; fileRef = 34B8AF5827D420B300D76DB2 /* kalman.c */; };
@@ -53,6 +53,8 @@
 		3411406B27FA5DD0001D8B11 /* tracker_utility.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = tracker_utility.hpp; sourceTree = "<group>"; };
 		3411407028038282001D8B11 /* kalman2d.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = kalman2d.h; sourceTree = "<group>"; };
 		3411407128038282001D8B11 /* kalman2d.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = kalman2d.c; sourceTree = "<group>"; };
+		3433ECB92847008700AA34D6 /* fisheye.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = fisheye.h; sourceTree = "<group>"; };
+		3433ECBA2847008700AA34D6 /* fisheye.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = fisheye.c; sourceTree = "<group>"; };
 		348858C7281248320029D7E7 /* tests.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = tests.cpp; sourceTree = "<group>"; };
 		348858C8281248320029D7E7 /* tests.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = tests.hpp; sourceTree = "<group>"; };
 		34A7453F27E7A84F00EDE4F5 /* ots_combine.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = ots_combine.cpp; sourceTree = "<group>"; };
@@ -84,12 +86,10 @@
 		34B8AEDB27D413D300D76DB2 /* sercom.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = sercom.h; sourceTree = "<group>"; };
 		34B8AEDC27D413D300D76DB2 /* serial_wrapper.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = serial_wrapper.cpp; sourceTree = "<group>"; };
 		34B8AEDD27D413D300D76DB2 /* file_writer.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = file_writer.cpp; sourceTree = "<group>"; };
-		34B8AEDF27D413D300D76DB2 /* ring_buffer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ring_buffer.h; sourceTree = "<group>"; };
 		34B8AEE027D413D300D76DB2 /* gaussian.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = gaussian.cpp; sourceTree = "<group>"; };
 		34B8AEE127D413D300D76DB2 /* kalman.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = kalman.cpp; sourceTree = "<group>"; };
 		34B8AEE227D413D300D76DB2 /* gaussian.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = gaussian.hpp; sourceTree = "<group>"; };
 		34B8AEE327D413D300D76DB2 /* kalman.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = kalman.hpp; sourceTree = "<group>"; };
-		34B8AEE427D413D300D76DB2 /* ring_buffer.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = ring_buffer.c; sourceTree = "<group>"; };
 		34B8AEE627D413D300D76DB2 /* opencv_master.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = opencv_master.h; sourceTree = "<group>"; };
 		34B8AEE727D413D300D76DB2 /* unfisheye.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = unfisheye.cpp; sourceTree = "<group>"; };
 		34B8AEE927D413D300D76DB2 /* image_cpp_types.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = image_cpp_types.h; sourceTree = "<group>"; };
@@ -225,8 +225,6 @@
 				34B8AEE227D413D300D76DB2 /* gaussian.hpp */,
 				34B8AEE127D413D300D76DB2 /* kalman.cpp */,
 				34B8AEE327D413D300D76DB2 /* kalman.hpp */,
-				34B8AEE427D413D300D76DB2 /* ring_buffer.c */,
-				34B8AEDF27D413D300D76DB2 /* ring_buffer.h */,
 			);
 			path = algorithm;
 			sourceTree = "<group>";
@@ -240,6 +238,8 @@
 				34B8AEE627D413D300D76DB2 /* opencv_master.h */,
 				34B8AEED27D413D300D76DB2 /* unfisheye.hpp */,
 				34B8AEE727D413D300D76DB2 /* unfisheye.cpp */,
+				3433ECB92847008700AA34D6 /* fisheye.h */,
+				3433ECBA2847008700AA34D6 /* fisheye.c */,
 				34E3582827D861B100047308 /* webcam_utility.hpp */,
 				34E3582727D861B100047308 /* webcam_utility.cpp */,
 			);
@@ -279,8 +279,8 @@
 			isa = PBXGroup;
 			children = (
 				34B8AF5D27D420B300D76DB2 /* qmath.h */,
-				34B8AF5E27D420B300D76DB2 /* point.c */,
 				34B8AF5A27D420B300D76DB2 /* point.h */,
+				34B8AF5E27D420B300D76DB2 /* point.c */,
 				34B8AF6027D420B300D76DB2 /* quaternion.c */,
 				34B8AF5C27D420B300D76DB2 /* quaternion.h */,
 				34B8AF5F27D420B300D76DB2 /* vector3.h */,
@@ -392,7 +392,6 @@
 				34E3582927D861B100047308 /* webcam_utility.cpp in Sources */,
 				34B8AEFD27D413D300D76DB2 /* gaussian.cpp in Sources */,
 				34B8AF6127D420B300D76DB2 /* kalman.c in Sources */,
-				34B8AEFF27D413D300D76DB2 /* ring_buffer.c in Sources */,
 				34A7454E27EC214700EDE4F5 /* detector_utility.cpp in Sources */,
 				34AD02E92806969A00CD78D3 /* matrix.c in Sources */,
 				34AA518C281B9C7B007613C1 /* fps_utility.cpp in Sources */,
@@ -403,6 +402,7 @@
 				3411407228038282001D8B11 /* kalman2d.c in Sources */,
 				34B105FB27DD2F1600CBD20E /* imu_wrapper.c in Sources */,
 				34AA518F2820BDD2007613C1 /* orienter.c in Sources */,
+				3433ECBB2847008700AA34D6 /* fisheye.c in Sources */,
 				3411406C27FA5DD0001D8B11 /* tracker_utility.cpp in Sources */,
 				34B8AEFE27D413D300D76DB2 /* kalman.cpp in Sources */,
 				34B8AEFC27D413D300D76DB2 /* file_writer.cpp in Sources */,

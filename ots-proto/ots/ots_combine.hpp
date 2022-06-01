@@ -59,13 +59,13 @@ public:
     RhoDetector det;
     TrackerUtility tracker;
     
-    Combine(kinetic_config_t * config, const char * file_name, SERCOM_Channel * imu_channel );
+    Combine(kinetic_config_t * config, const char * file_name, SERCOM_Channel * imu_channel, camera_intrinsics_t camera_intrinsics );
 
     TestInterface* GetUtility(combine_utility_e name);
     void UpdateIMUData();
     void UpdatePointData();
     
-    void OnFrame( cv::Mat );
+    void OnFrame( cv::Mat, double );
     std::function<void(cv::Mat)> OnShow;
     pthread_mutex_t frame_mutex;
     cv::Mat frame;

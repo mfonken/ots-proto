@@ -21,13 +21,14 @@ class FPSUtility : public TestInterface
     void init( void );
     string serialize( void );
     
+    int n_samples, i = 0;
     std::vector<double> t;
     double now_t;
     double prv_t;
     double rate = 0;
     
 public:
-    FPSUtility(string n = "fps");
+    FPSUtility(int n_samples = 10, string name = "fps");
     
     void trigger();
     
