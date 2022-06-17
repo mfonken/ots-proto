@@ -115,7 +115,7 @@ void CombineDemo::ShowFrame(bool show_processed)
                 imshow("Demo", m);
             }
         }
-        char k = waitKey(10);
+        char k = waitKey(50);
         if(k > 0 && k != key_) HandleKey(k);
         key_ = k;
     }

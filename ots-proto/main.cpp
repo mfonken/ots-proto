@@ -10,6 +10,7 @@
 #include "opencv2/video/tracking.hpp"
 #include "opencv2/highgui.hpp"
 #include "opencv2/core/cvdef.h"
+#include <opencv2/calib3d.hpp>
 
 #include "kalman2d.h"
 
@@ -58,7 +59,16 @@ int main(int argc, const char * argv[])
         { -0.06666608728707157, -0.015936129419735538, 0.008432133073367098, -0.0029393030590729977 }
     };
     
-    Combine combine(&config, file_name, &imu_channel, camera_intrinsics);
+    
+//    Mat K = Mat(3, 3, CV_64FC1, &camera_intrinsics.K);
+//    Mat D = Mat(4, 1, CV_64FC1, &camera_intrinsics.D);
+//    Mat map1, map2;
+//    initUndistortRectifyMap(K, D, cv::Mat(), K, Size(1920, 1080), CV_16SC2, map1, map2);
+////    remap(m, u, map1, map2, cv::INTER_LINEAR, cv::BORDER_CONSTANT);
+//    imshow("Figure", map1);
+//    waitKey(10000);
+    
+    Combine combine(&config, file_name, &imu_channel, &camera_intrinsics);
     CombineDemo demo(&env, &combine);
     
 #ifdef TEST
