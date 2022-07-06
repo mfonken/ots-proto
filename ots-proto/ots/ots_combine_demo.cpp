@@ -80,7 +80,8 @@ void CombineDemo::ShowFrame(bool show_processed)
     while(true)
     {
         if((show_processed && combine->new_processed_frame) || (!show_processed && combine->new_frame))
-        { LOCK(&combine->frame_mutex)
+        {
+//            LOCK(&combine->frame_mutex)
             Mat m;
             if(!combine->frame.empty())
             {
@@ -112,7 +113,8 @@ void CombineDemo::ShowFrame(bool show_processed)
                 line( m, Point(w - l, h), Point(w + l, h), c, t);
                 line( m, Point(w, h - l), Point(w, h + l), c, t);
                 
-                imshow("Demo", m);
+                Mat show = m.clone();
+                imshow("Demo", show);
             }
         }
         char k = waitKey(50);
@@ -299,3 +301,104 @@ void CombineDemo::Record(int seconds, int webcam_rate, int imu_rate, string path
 ////            imwrite(img_s.str(), img);
 //    printf("img: %s\n", img_s.str().c_str());
 //}
+
+void CombineDemo::Visualizer(int rate)
+{
+    int dim = 350;
+    double scale = 5;
+    
+    // Perspective
+    double rv[3] = { 0.0, 0.0, 0.0 }; //45.0 * DEG_TO_RAD }; // X>Y>Z
+    Mat R, r(3, 1, CV_64F, (void*)rv);
+    cv::Rodrigues(r, R);
+    cout << r << endl;
+    cout << R << endl;
+    
+    double tv[3] = { 0, -2, 10 };
+    Mat T(3, 1, CV_64F, (void*)tv);
+    cout << T << endl;
+    
+    double f = dim / 2.0;
+    double c = (double)dim / 2.0;
+    double kv[9] = { f, 0, c, 0, f, c, 0, 0, 1 };
+    Mat K(3, 3, CV_64F, (void*)kv);
+    
+    cout << K << endl;
+    
+    // Points
+    double pv[12] = { 1, 0, 0, 0, 1, 0, 0, 0, -1, 0, 0, 0 };
+    Mat p(4, 3, CV_64F, (void*)pv);
+    p *= scale;
+    cout << p << endl;
+    
+    Mat P;
+    projectPoints(p, R, T, K, Mat::zeros(4, 1, CV_64F), P);
+    cout << P << endl;
+    
+    imu_t * imu = &combine->imu.imu;
+    InitUtility(Combine::IMU, rate);
+    Start();
+    orienter_t ori;
+    
+    while(1)
+    {
+        Mat vis(dim, dim, CV_8UC3, Scalar(255, 255, 255));
+        
+        // Draw Axes
+        Point o = (Point)P.at<Vec2d>(3);
+        Scalar colors[3] = { Scalar(0, 0, 255), Scalar(0, 255, 0), Scalar(255, 0, 0) };
+        for( int i = 0; i < 3; i++ )
+        {
+            Point pi = (Point)P.at<Vec2d>(i);
+            cv::line(vis, o, pi, colors[i]);
+        }
+        
+        double * mrv;
+        vec3_t a = { imu->pitch, imu->roll, imu->yaw };
+        { LOCK(&combine->kin.orienter_data_mutex);
+            OrienterFunctions.Update( &ori, &a );
+            mrv = (double*)&ori.rotation;
+        }
+        
+        float c1 = cos(mrv[1] * DEG_TO_RAD);
+        float s1 = sin(mrv[1] * DEG_TO_RAD);
+        float c2 = cos(mrv[0] * DEG_TO_RAD); // intrinsic rotation
+        float s2 = sin(mrv[0] * DEG_TO_RAD);
+        float c3 = cos(mrv[2] * DEG_TO_RAD);
+        float s3 = sin(mrv[2] * DEG_TO_RAD);
+        
+        double MRv[9] = { c2*c3, s1*s3+c1*c3*s2, c3*s1*s2-c1*s3,
+                            -s2,          c1*c2,          c2*s1,
+                          c2*s3, c1*s2*s3-c3*s1, c1*c3+s1*s2*s3 };
+        Mat mr(1, 3, CV_64F, (void*)mrv), MR(3, 3, CV_64F, MRv);
+        cout << mr << endl;
+        mr *= DEG_TO_RAD;
+//        MR *= DEG_TO_RAD;
+//        cv::Rodrigues(mr, MR);
+//        MR *= R;
+        
+        double mpv[9] = { 1, 0, 0, 0, 1, 0, 0, 0, 1 };
+        Mat mp(3, 3, CV_64F, (void*)mpv);
+        mp *= scale;
+        Mat MP;
+        projectPoints(mp, MR, T, K, Mat::zeros(4, 1, CV_64F), MP);
+        Scalar colors_[3] = { Scalar(100, 0, 255), Scalar(0, 255, 100), Scalar(255, 100, 0) };
+        for(int i = 0; i < 3; i++)
+        {
+            Point p = (Point)MP.at<Vec2d>(i);
+            cv::line(vis, o, p, colors_[i], 2);
+        }
+        
+//        cout << o << endl;
+        
+        imshow("3d", vis);
+        switch(waitKey(1000 / 10))
+        {
+            case ' ':
+                OrienterFunctions.Tare( &ori );
+                break;
+            default:
+                break;
+        }
+    }
+}

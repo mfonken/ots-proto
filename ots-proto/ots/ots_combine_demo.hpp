@@ -13,6 +13,7 @@
 #include "ots_combine.hpp"
 #include "fps_utility.hpp"
 #include <opencv2/viz/types.hpp>
+#include <opencv2/calib3d.hpp>
 
 class CombineDemo
 {
@@ -58,6 +59,8 @@ public:
     
     void Record(int seconds, int webcam_rate, int imu_rate, string path="~/Desktop");
     void OnFrame(cv::Mat frame, double timestamp_ms);
+    
+    void Visualizer(int rate = 10);
 };
 
 #endif /* ots_combine_demo_hpp */

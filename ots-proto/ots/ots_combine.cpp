@@ -75,6 +75,7 @@ void Combine::UpdatePointData()
 {
     kpoint_t A = { 0 }, B = { 0 };
     { LOCK(&det.pts_mutex)
+//        printf("UpdatePointData: %d\n", det.pts.size());
         vector<Point2f> pts = det.pts;
         if(pts.size() < 2) return;
         A.x = pts[0].x;
@@ -95,7 +96,8 @@ void Combine::trigger()
 
     // Update detection
     if(new_frame)
-    { LOCK(&frame_mutex)
+    {
+//        LOCK(&frame_mutex)
         det.perform( frame );
         det.draw( frame );
         new_frame = false;
@@ -117,7 +119,8 @@ void Combine::trigger()
 }
 
 void Combine::OnFrame(Mat m, double t_ns)
-{ LOCK(&frame_mutex)
+{
+//    LOCK(&frame_mutex)
     LOG_CMB(DEBUG_1, "frame\n");
     frame = m.clone();
     new_processed_frame = false;
