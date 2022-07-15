@@ -18,15 +18,17 @@
 
 using namespace cv;
 
-const char * file_name = "/Users/matthew/Desktop/ots-cmbine.dat";
-SERCOM_Channel imu_channel = { -1, "/dev/tty.usbmodem144101", "/dev/tty.usbmodem144301", B115200, CS8, 0.1, 0 };
+const char * file_name = "/Users/matthew/Desktop/ots-combine.dat";
+SERCOM_Channel imu_channel = { -1, "/dev/tty.usbmodem144101", "/dev/tty.usbmodem144201", B115200, CS8, 0.1, 0 };
+
+int fps = 25;
 
 CombineDemo::combine_utility_rate_t rates[] =
 {
-    { Combine::WEBCAM, 20 },
-    { Combine::IMU, 20 },
-    { Combine::COMBINE, 20 },
-    { Combine::KINETIC, 20 },
+    { Combine::WEBCAM, fps },
+    { Combine::IMU, fps },
+    { Combine::COMBINE, fps },
+    { Combine::KINETIC, fps },
 };
 
 void show( cv::Mat m )
@@ -72,10 +74,10 @@ int main(int argc, const char * argv[])
     CombineDemo demo(&env, &combine);
     
 #ifdef TEST
-    demo.Visualizer();
+//    demo.Visualizer();
 //    demo.TestRho(10);
 //    demo.TestIMU(100);
-//    demo.TestWebcam(5);
+//    demo.TestWebcam(10);
 //    demo.TestKinetic(20);
 //    demo.TestTracker();
 //    demo.Record(45, 15, 30, "/Users/matthew/Desktop/dev/cam-imu-dataset");

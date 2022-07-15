@@ -111,6 +111,8 @@ void Combine::trigger()
         UpdatePointData();
     
         kin.trigger();
+        
+        comm.write(kin.serialize(), false);
 //
 //        string packet = "";
 //        comm.write(packet);
