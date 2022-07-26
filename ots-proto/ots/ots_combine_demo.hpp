@@ -8,10 +8,9 @@
 #ifndef ots_combine_demo_hpp
 #define ots_combine_demo_hpp
 
-#define IMAGE_THRESHOLD 165
-
 #include "ots_combine.hpp"
 #include "fps_utility.hpp"
+#include "rho_drawer.hpp"
 #include <opencv2/viz/types.hpp>
 #include <opencv2/calib3d.hpp>
 

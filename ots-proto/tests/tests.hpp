@@ -15,4 +15,6 @@
 
 #include "kalman2d.h"
 
+void kalman_test();
+
 #endif /* tests_hpp */

@@ -17,8 +17,9 @@ Combine::Combine(kinetic_config_t * config, const char * file_name, SERCOM_Chann
     imu(imu_channel),
     new_frame(false),
     new_processed_frame(false),
-    wcu("webcam", camera_intrinsics, 1),
-    det(camera_intrinsics)
+    wcu("webcam", camera_intrinsics, CAMERA_ID),
+    det(camera_intrinsics),
+    rho_drawer(&RhoSystem.Variables.Utility)
 {
     if( pthread_mutex_init(&frame_mutex, NULL) != 0 )
         printf( "mutex init failed\n" );
@@ -51,6 +52,8 @@ TestInterface* Combine::GetUtility(combine_utility_e name)
 
 void Combine::init( void )
 {
+    rho.Init(wcu.size.width, wcu.size.height);
+    
     LOG_CMB(DEBUG_1, "Initialized.\n");
 }
 
@@ -71,12 +74,11 @@ void Combine::UpdateIMUData()
 //    LOG_CMB(DEBUG_2, "Grav: <%.2f, %.2f, %.2f> | Ori: <%.2f, %.2f, %.2f>\n", n.i, n.j, n.k, a.x, a.y, a.z);
 }
 
-void Combine::UpdatePointData()
+void Combine::UpdatePointData(vector<Point2f> pts)
 {
     kpoint_t A = { 0 }, B = { 0 };
     { LOCK(&det.pts_mutex)
 //        printf("UpdatePointData: %d\n", det.pts.size());
-        vector<Point2f> pts = det.pts;
         if(pts.size() < 2) return;
         A.x = pts[0].x;
         A.y = pts[0].y;
@@ -97,9 +99,15 @@ void Combine::trigger()
     // Update detection
     if(new_frame)
     {
+#ifdef USE_RHO
+        rho.Perform( frame );
+        rho_drawer.DrawDensityGraph( frame );
+        det.pts = rho.GetPredictions();
+#else
 //        LOCK(&frame_mutex)
         det.perform( frame );
         det.draw( frame );
+#endif
         new_frame = false;
         new_processed_frame = true;
 //        printf("\n");
@@ -108,7 +116,7 @@ void Combine::trigger()
     // Update kinetic
     { LOCK(&mutex)
         UpdateIMUData();
-        UpdatePointData();
+        UpdatePointData(det.pts);
     
         kin.trigger();
         
@@ -124,7 +132,11 @@ void Combine::OnFrame(Mat m, double t_ns)
 {
 //    LOCK(&frame_mutex)
     LOG_CMB(DEBUG_1, "frame\n");
+#ifdef IMAGE_THRESHOLD
+    threshold( m, frame, IMAGE_THRESHOLD, 255, 0 );
+#else
     frame = m.clone();
+#endif
     new_processed_frame = false;
     new_frame = true;
 }

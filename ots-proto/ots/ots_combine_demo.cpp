@@ -127,22 +127,54 @@ void CombineDemo::ShowFrame(bool show_processed)
 void CombineDemo::TestRho(int rate)
 {
     InitUtility(Combine::WEBCAM, rate);
+    int n = 1;
+    int nframes = 26;
+    Mat m;
+#ifdef USE_RHO
+    combine->rho.Init(FRAME_WIDTH_BASE, FRAME_HEIGHT);//combine->wcu.size.width, combine->wcu.size.height);
+    RhoDrawer drawer(&RhoSystem.Variables.Utility);
+#endif
     Start();
-//    int n = 26;
     while(true)
     {
+        // cv::imread("/Users/matthew/Desktop/PersonalResources/TestImages/frames/single/" + to_string(n++) + ".png");
+//        if(combine->wcu.frame.cols > 0)
         { //LOCK(mutex)
-            Mat m; //cv::imread("/Users/matthew/Desktop/PersonalResources/TestImages/frames/ellipse/" + to_string(n++) + ".png");//
+            resize(cv::imread("/Users/matthew/Desktop/PersonalResources/TestImages/frames/ellipse/" + to_string(n++) + ".png"), m, Size(FRAME_WIDTH_BASE, FRAME_HEIGHT), INTER_NEAREST);
+//            Mat m; // cv::imread("/Users/matthew/Desktop/PersonalResources/TestImages/frames/ellipse/" + to_string(n) + ".png");//
+//            m.at<Vec3b>(1, 1) = Vec3b(255, 255, 255);
+            //
+#ifdef USE_RHO
+            m = combine->wcu.frame.clone();
+//            resize(combine->wcu.frame, m, Size(size, size));
+//#else
+#ifdef IMAGE_THRESHOLD
             threshold( combine->wcu.frame, m, IMAGE_THRESHOLD, 255, 0 );
+#endif
+#endif
             if(m.cols > 0)
             {
+#ifdef USE_RHO
+                combine->rho.Perform( m );
+                drawer.DrawDensityGraph( m );
+#else
                 combine->det.perform(m);
                 combine->det.draw(m);
+#endif
                 imshow("figure", m);
             }
         }
-        waitKey(1000 / rate);
-//        if(n > 26) n = 0;
+        switch(waitKey(1000 / rate))
+        {
+            case ' ':
+                if(env->status == PAUSED)
+                    env->resume();
+                else
+                    env->pause();
+            default:
+                break;
+        }
+        if(n > nframes) n = 1;
     }
 }
 

@@ -16,6 +16,13 @@
 #include "kinetic_utility.hpp"
 //#include "ots_comm.hpp"
 #include "detector_utility.hpp"
+#include "rho_wrapper.hpp"
+#include "rho_drawer.hpp"
+
+#define CAMERA_ID 0 // 1
+
+#define USE_RHO
+//#define IMAGE_THRESHOLD 250
 
 #define DEBUG_CMB
 
@@ -56,14 +63,16 @@ public:
     WebcamUtility wcu;
     IMUUtility imu;
     KineticUtility kin;
-    RhoDetector det;
+    BlobDetector det;
     TrackerUtility tracker;
+    RhoWrapper rho;
+    RhoDrawer rho_drawer;
     
     Combine(kinetic_config_t * config, const char * file_name, SERCOM_Channel * imu_channel, camera_intrinsics_t * camera_intrinsics );
 
     TestInterface* GetUtility(combine_utility_e name);
     void UpdateIMUData();
-    void UpdatePointData();
+    void UpdatePointData(vector<cv::Point2f>);
     
     void OnFrame( cv::Mat, double );
     std::function<void(cv::Mat)> OnShow;
