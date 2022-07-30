@@ -19,7 +19,7 @@ Combine::Combine(kinetic_config_t * config, const char * file_name, SERCOM_Chann
     new_processed_frame(false),
     wcu("webcam", camera_intrinsics, CAMERA_ID),
     det(camera_intrinsics),
-    rho_drawer(&RhoSystem.Variables.Utility)
+    rho_drawer(&RhoSystem.Variables.Utility, &rho.capture)
 {
     if( pthread_mutex_init(&frame_mutex, NULL) != 0 )
         printf( "mutex init failed\n" );

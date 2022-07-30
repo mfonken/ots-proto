@@ -126,26 +126,28 @@ void CombineDemo::ShowFrame(bool show_processed)
 /// TESTS
 void CombineDemo::TestRho(int rate)
 {
-    InitUtility(Combine::WEBCAM, rate);
+//    InitUtility(Combine::WEBCAM, rate);
     int n = 1;
+    int s = 1;
     int nframes = 26;
     Mat m;
 #ifdef USE_RHO
     combine->rho.Init(FRAME_WIDTH_BASE, FRAME_HEIGHT);//combine->wcu.size.width, combine->wcu.size.height);
-    RhoDrawer drawer(&RhoSystem.Variables.Utility);
+    RhoDrawer drawer(&RhoSystem.Variables.Utility, &combine->rho.capture);
 #endif
-    Start();
+//    Start();
     while(true)
     {
         // cv::imread("/Users/matthew/Desktop/PersonalResources/TestImages/frames/single/" + to_string(n++) + ".png");
 //        if(combine->wcu.frame.cols > 0)
         { //LOCK(mutex)
-            resize(cv::imread("/Users/matthew/Desktop/PersonalResources/TestImages/frames/ellipse/" + to_string(n++) + ".png"), m, Size(FRAME_WIDTH_BASE, FRAME_HEIGHT), INTER_NEAREST);
+            int n_ = ceil(n++ / (float)s);
+            resize(cv::imread("/Users/matthew/Desktop/PersonalResources/TestImages/frames/small/" + to_string(n_) + ".png"), m, Size(FRAME_WIDTH_BASE, FRAME_HEIGHT), INTER_NEAREST);
 //            Mat m; // cv::imread("/Users/matthew/Desktop/PersonalResources/TestImages/frames/ellipse/" + to_string(n) + ".png");//
 //            m.at<Vec3b>(1, 1) = Vec3b(255, 255, 255);
             //
 #ifdef USE_RHO
-            m = combine->wcu.frame.clone();
+//            m = combine->wcu.frame.clone();
 //            resize(combine->wcu.frame, m, Size(size, size));
 //#else
 #ifdef IMAGE_THRESHOLD
@@ -174,7 +176,7 @@ void CombineDemo::TestRho(int rate)
             default:
                 break;
         }
-        if(n > nframes) n = 1;
+        if(n > nframes * s) n = 1;
     }
 }
 

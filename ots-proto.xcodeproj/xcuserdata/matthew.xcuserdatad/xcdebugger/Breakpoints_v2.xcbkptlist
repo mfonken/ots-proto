@@ -158,8 +158,8 @@
             filePath = "../../combine/rho/core/rho_capture.c"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "80"
-            endingLineNumber = "80"
+            startingLineNumber = "114"
+            endingLineNumber = "114"
             landmarkName = "RhoCapture_ProcessFrameSection(rows, thresh_address, thresh_end, Cx, Dy, Dx_i)"
             landmarkType = "9">
          </BreakpointContent>
@@ -206,8 +206,8 @@
             filePath = "../../combine/wrappers/rho_wrapper/rho_drawer.cpp"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "246"
-            endingLineNumber = "246"
+            startingLineNumber = "247"
+            endingLineNumber = "247"
             landmarkName = "DrawDensityMap(M, dmap, range, height, dim)"
             landmarkType = "9">
          </BreakpointContent>

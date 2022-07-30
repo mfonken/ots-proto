@@ -15,7 +15,7 @@
 #include "opencv2/core/cvdef.h"
 #include <opencv2/calib3d.hpp>
 
-//#define TEST
+#define TEST
 
 using namespace cv;
 
