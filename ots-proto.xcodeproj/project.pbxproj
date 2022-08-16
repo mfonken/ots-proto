@@ -46,6 +46,7 @@
 		34B8AF6227D420B300D76DB2 /* vector3.c in Sources */ = {isa = PBXBuildFile; fileRef = 34B8AF5B27D420B300D76DB2 /* vector3.c */; };
 		34B8AF6327D420B300D76DB2 /* point.c in Sources */ = {isa = PBXBuildFile; fileRef = 34B8AF5E27D420B300D76DB2 /* point.c */; };
 		34B8AF6427D420B300D76DB2 /* quaternion.c in Sources */ = {isa = PBXBuildFile; fileRef = 34B8AF6027D420B300D76DB2 /* quaternion.c */; };
+		34E257DF289CBC6B000999F8 /* rho_track.c in Sources */ = {isa = PBXBuildFile; fileRef = 34E257DE289CBC6B000999F8 /* rho_track.c */; };
 		34E3582927D861B100047308 /* webcam_utility.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 34E3582727D861B100047308 /* webcam_utility.cpp */; };
 		34F0ECC327C2C987001B3C57 /* main.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 34F0ECC227C2C987001B3C57 /* main.cpp */; };
 /* End PBXBuildFile section */
@@ -165,6 +166,8 @@
 		34B8AF5E27D420B300D76DB2 /* point.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = point.c; sourceTree = "<group>"; };
 		34B8AF5F27D420B300D76DB2 /* vector3.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = vector3.h; sourceTree = "<group>"; };
 		34B8AF6027D420B300D76DB2 /* quaternion.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = quaternion.c; sourceTree = "<group>"; };
+		34E257DD289CBC6B000999F8 /* rho_track.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = rho_track.h; sourceTree = "<group>"; };
+		34E257DE289CBC6B000999F8 /* rho_track.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = rho_track.c; sourceTree = "<group>"; };
 		34E3582327D421B900047308 /* test_config.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = test_config.h; sourceTree = "<group>"; };
 		34E3582727D861B100047308 /* webcam_utility.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = webcam_utility.cpp; sourceTree = "<group>"; };
 		34E3582827D861B100047308 /* webcam_utility.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = webcam_utility.hpp; sourceTree = "<group>"; };
@@ -254,6 +257,8 @@
 		3494A036288B787100489658 /* core */ = {
 			isa = PBXGroup;
 			children = (
+				34E257DD289CBC6B000999F8 /* rho_track.h */,
+				34E257DE289CBC6B000999F8 /* rho_track.c */,
 				3494A03C288B787100489658 /* rho_utility.h */,
 				3494A038288B787100489658 /* rho_utility.c */,
 				3494A039288B787100489658 /* rho_core.h */,
@@ -488,7 +493,7 @@
 			isa = PBXProject;
 			attributes = {
 				BuildIndependentTargetsInParallel = 1;
-				LastUpgradeCheck = 1320;
+				LastUpgradeCheck = 1340;
 				TargetAttributes = {
 					34F0ECBE27C2C986001B3C57 = {
 						CreatedOnToolsVersion = 13.2.1;
@@ -543,6 +548,7 @@
 				34AD02E92806969A00CD78D3 /* matrix.c in Sources */,
 				3494A056288B787100489658 /* matvec.c in Sources */,
 				3494A057288B787100489658 /* statistics.c in Sources */,
+				34E257DF289CBC6B000999F8 /* rho_track.c in Sources */,
 				34B105FF27DD2FA100CBD20E /* ots_combine_demo.cpp in Sources */,
 				34F0ECC327C2C987001B3C57 /* main.cpp in Sources */,
 				34B8AF6227D420B300D76DB2 /* vector3.c in Sources */,
@@ -680,6 +686,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				CLANG_CXX_LANGUAGE_STANDARD = "c++20";
+				CODE_SIGN_IDENTITY = "-";
 				CODE_SIGN_STYLE = Automatic;
 				GCC_PREPROCESSOR_DEFINITIONS = (
 					"DEBUG=1",
@@ -756,6 +763,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				CLANG_CXX_LANGUAGE_STANDARD = "c++20";
+				CODE_SIGN_IDENTITY = "-";
 				CODE_SIGN_STYLE = Automatic;
 				HEADER_SEARCH_PATHS = "/usr/local/Cellar/opencv/4.5.5_2/include/**";
 				LIBRARY_SEARCH_PATHS = "/usr/local/Cellar/opencv/4.5.5_2/lib/**";

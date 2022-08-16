@@ -28,7 +28,7 @@ int main(int argc, const char * argv[])
     
 #ifdef TEST
 //    demo.Visualizer();
-    demo.TestRho(10);
+    demo.TestRho(30);
 //    demo.TestIMU(100);
 //    demo.TestWebcam(10);
 //    demo.TestKinetic(20);

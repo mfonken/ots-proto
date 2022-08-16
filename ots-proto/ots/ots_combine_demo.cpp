@@ -184,7 +184,6 @@ void CombineDemo::TestWebcam(int rate)
 {
     pthread_mutex_t * mutex = InitUtility(Combine::WEBCAM, rate);
     Start();
-    printf("demo->%p\n", mutex);
     ShowWebcam();
 }
 

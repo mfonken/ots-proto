@@ -174,14 +174,14 @@ void drawReals(Mat M, int al, int bl)
     line(M, Point(bl,0), Point(bl, HEIGHT), CIRCLE_COLOR_B);
 }
 
-void drawKalmans( Mat M, kalman_filter_t * A, kalman_filter_t * B )
+void drawKalmans( Mat M, kalman_t * A, kalman_t * B )
 {
     Point p1(A->value, HEIGHT/2), p2(B->value, HEIGHT/2);
     circle(M, p1, CIRCLE_RADIUS, CIRCLE_COLOR_A, -1);
     circle(M, p2, CIRCLE_RADIUS, CIRCLE_COLOR_B, -1);
 }
 
-void dualTest(kalman_filter_t * K, double v1, double v2)
+void dualTest(kalman_t * K, double v1, double v2)
 {
     double x_ = K->value,
     v = K->velocity;//(K->velocity+prev_velocity)/2;
@@ -197,7 +197,7 @@ void dualTest(kalman_filter_t * K, double v1, double v2)
         Kalman.Step(K, v2, v);
 }
 
-void matchKalmans(kalman_filter_t * K1, kalman_filter_t * K2, double i1, double i2)
+void matchKalmans(kalman_t * K1, kalman_t * K2, double i1, double i2)
 {
     double x_1 = K1->value, /*x_2 = K2->value,*/ v1 = K1->velocity, v2 = K2->velocity;
     double x1 = x_1 + v1;//, x2 = x_2 + v2;
@@ -239,7 +239,7 @@ bool randomSwap( double *a, double *b )
 void kalman_test()
 {
     double Astart = WIDTH/10, Bstart = WIDTH - Astart;
-    kalman_filter_t A, B;
+    kalman_t A, B;
     kalman_uncertainty_c uncertainty = { VU, BU, SU };
     Kalman.Initialize(&A, Astart, LS, MIN_V, MAX_V, uncertainty);
     Kalman.Initialize(&B, Bstart, LS, MIN_V, MAX_V, uncertainty);
