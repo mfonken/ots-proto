@@ -17,9 +17,9 @@ Combine::Combine(kinetic_config_t * config, const char * file_name, SERCOM_Chann
     imu(imu_channel),
     new_frame(false),
     new_processed_frame(false),
-    wcu("webcam", camera_intrinsics, CAMERA_ID),
+    wcu("webcam", camera_intrinsics, CAMERA_ID, config->width, config->height),
     det(camera_intrinsics),
-    rho_drawer(&RhoSystem.Variables.Utility, &rho.capture)
+    rho_drawer(&RhoSystem.Variables.Utility, &rho.capture, config->width, config->height )
 {
     if( pthread_mutex_init(&frame_mutex, NULL) != 0 )
         printf( "mutex init failed\n" );
@@ -98,7 +98,7 @@ void Combine::trigger()
 
     // Update detection
     if(new_frame)
-    {
+    { LOCK(&frame_mutex)
 #ifdef USE_RHO
         rho.Perform( frame );
         rho_drawer.DrawDensityGraph( frame );
@@ -130,12 +130,13 @@ void Combine::trigger()
 
 void Combine::OnFrame(Mat m, double t_ns)
 {
-//    LOCK(&frame_mutex)
     LOG_CMB(DEBUG_1, "frame\n");
 #ifdef IMAGE_THRESHOLD
     threshold( m, frame, IMAGE_THRESHOLD, 255, 0 );
 #else
-    frame = m.clone();
+    { LOCK(&frame_mutex)
+        frame = m.clone();
+    }
 #endif
     new_processed_frame = false;
     new_frame = true;

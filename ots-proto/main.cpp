@@ -20,7 +20,9 @@
 using namespace cv;
 
 int main(int argc, const char * argv[])
-{    
+{
+//    kalman_test();
+    
     Environment env("CombineDemo");
     
     Combine combine(&config, file_name, &imu_channel, &camera_intrinsics );
@@ -28,7 +30,7 @@ int main(int argc, const char * argv[])
     
 #ifdef TEST
 //    demo.Visualizer();
-    demo.TestRho(30);
+    demo.TestRho(10);
 //    demo.TestIMU(100);
 //    demo.TestWebcam(10);
 //    demo.TestKinetic(20);

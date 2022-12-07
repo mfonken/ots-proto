@@ -18,7 +18,7 @@ SERCOM_Channel imu_channel = { -1, "/dev/tty.usbmodem144401", "/dev/tty.usbmodem
 
 static int fps = 25;
 
-static kinetic_config_t config = { 1920, 1080, FOCAL_LENGTH, D_FIXED };
+static kinetic_config_t config = { FRAME_WIDTH_BASE, FRAME_HEIGHT, FOCAL_LENGTH, D_FIXED };
 static camera_intrinsics_t camera_intrinsics =
 {
     {

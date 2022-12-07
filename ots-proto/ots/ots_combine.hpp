@@ -75,7 +75,6 @@ public:
     void UpdatePointData(vector<cv::Point2f>);
     
     void OnFrame( cv::Mat, double );
-    std::function<void(cv::Mat)> OnShow;
     pthread_mutex_t frame_mutex;
     cv::Mat frame;
     bool new_frame;

@@ -105,7 +105,7 @@ int kalmanopencv_test(int, const char**)
 void kalman2d_test()
 {
     kalman2d_t kf;
-    Kalman2D.init( &kf, 1e-5, 0.1, 0.1 );
+    Kalman2D.Init( &kf, NULL, 1, 0.0001, 0.0001 );
     help();
     Mat img(500, 500, CV_8UC3);
     Point2f center(img.cols*0.5f, img.rows*0.5f);
@@ -116,21 +116,24 @@ void kalman2d_test()
     {
         img = Scalar::all(0);
         double angle = 0;
-        double angle_step = 10;
+        double angle_step = 2;
         int markerSize = 10;
+        int random_travel = 10;
         for(;;)
         {
-            Kalman2D.predict( &kf );
-            Point predictPt = Point(kf.state.px, kf.state.py);
+            Kalman2D.Predict( &kf );
+            Point predictPt = Point(kf.x.px, kf.x.py);
             
             int ang_ = (int)angle % 90;
             float R_ = R / (ang_ < 45 ? cos(ang_ / 180.0 * CV_PI) : sin(ang_ / 180.0 * CV_PI));
             
             Point statePt = calcPoint(center, R_, angle / 180.0 * CV_PI);
+            statePt.x += rand() % random_travel - random_travel/2;
+            statePt.y += rand() % random_travel - random_travel/2;
             Point measPt = Point(statePt.x, statePt.y);
             double state[2] = { (double)statePt.x, (double)statePt.y };
-            Kalman2D.update( &kf, state );
-            Point improvedPt = Point(kf.state.px, kf.state.py);
+            Kalman2D.Update( &kf, state );
+            Point improvedPt = Point(kf.x.px, kf.x.py);
             
             img = img * 0.2;
             drawMarker(img, predictPt, Scalar(0, 255, 255), cv::MARKER_SQUARE, markerSize, 2);
@@ -176,15 +179,15 @@ void drawReals(Mat M, int al, int bl)
 
 void drawKalmans( Mat M, kalman_t * A, kalman_t * B )
 {
-    Point p1(A->value, HEIGHT/2), p2(B->value, HEIGHT/2);
+    Point p1(A->x.p, HEIGHT/2), p2(B->x.p, HEIGHT/2);
     circle(M, p1, CIRCLE_RADIUS, CIRCLE_COLOR_A, -1);
     circle(M, p2, CIRCLE_RADIUS, CIRCLE_COLOR_B, -1);
 }
 
 void dualTest(kalman_t * K, double v1, double v2)
 {
-    double x_ = K->value,
-    v = K->velocity;//(K->velocity+prev_velocity)/2;
+    double x_ = K->x.p,
+    v = K->x.v;//(K->velocity+prev_velocity)/2;
 
     double x = x_ + v;
     double p1 = fabs(x-v1), p2 = fabs(x-v2);
@@ -192,14 +195,14 @@ void dualTest(kalman_t * K, double v1, double v2)
 //    printf("x:%.1f | x_:%.1f | v1:%.1f | v2:%.1f | p1:%.1f | p2:%.1f | dt:%.3f | v:%.1f | pv:%.1f | dv:%.3f\n", x, x_, v1, v2, p1, p2, dt, v, prev_velocity, dv);
     
     if( p1 < p2 )
-        Kalman.Step(K, v1, v);
+        Kalman.Step(K, v1);
     else
-        Kalman.Step(K, v2, v);
+        Kalman.Step(K, v2);
 }
 
 void matchKalmans(kalman_t * K1, kalman_t * K2, double i1, double i2)
 {
-    double x_1 = K1->value, /*x_2 = K2->value,*/ v1 = K1->velocity, v2 = K2->velocity;
+    double x_1 = K1->x.p, v1 = K1->x.v;
     double x1 = x_1 + v1;//, x2 = x_2 + v2;
     double p11 = fabs(x1-i1), p12 = fabs(x1-i2);//, p21 = fabs(x2-i1), p22 = fabs(x2-i2);
     
@@ -207,13 +210,16 @@ void matchKalmans(kalman_t * K1, kalman_t * K2, double i1, double i2)
     
     if( p11 < p12 )
     {
-        Kalman.Step(K1, i1, v1);
-        Kalman.Step(K2, i2, v2);
+        Kalman.Step(K1, i1);
+        Kalman.Step(K2, i2);
     }
     else
     {
-        Kalman.Step(K1, i2, v1);
-        Kalman.Step(K2, i1, v2);
+        Kalman.Step(K1, i2);
+        Kalman.Step(K2, i1);
+        
+        if(isnan(K1->x.p) || isnan(K2->x.p))
+            printf("!");
     }
 }
 
@@ -230,19 +236,73 @@ bool randomSwap( double *a, double *b )
 }
 
 #define LS 10
-#define VU 0.001
-#define BU 0
-#define SU 0
+#define ACC 1
+#define VU 1
+#define SU 0.01
 #define MIN_V 0
 #define MAX_V WIDTH
-
 void kalman_test()
+{
+    double Astart = WIDTH/10;
+    kalman_t A;
+    Kalman.Init(&A, Astart, ACC, VU, SU, LS, MIN_V, MAX_V);
+    Sweeper swA("Sweeper A", STEPS/2, Astart, WIDTH - Astart);
+    
+    Environment env("kalman test", &swA, SWEEPER_FPS/2);
+    env.start();
+    
+    double areal;
+    
+    bool live = true;
+    
+    while(1)
+    {
+        Mat O(HEIGHT, WIDTH, CV_8UC3, Scalar(15,15,15));
+    
+        areal = swA.value;
+        Kalman.Step(&A, areal);
+        
+        Point p1(A.x.p, HEIGHT/2);
+        circle(O, p1, CIRCLE_RADIUS, CIRCLE_COLOR_A, -1);
+        line(O, p1, Point(A.x.p+A.x.v/10, HEIGHT/2), Scalar(0, 100, 255));
+        line(O, p1, Point(A.x.p+A.x.a, HEIGHT/2), Scalar(255, 150, 0));
+        line(O, Point(areal,0), Point(areal, HEIGHT), CIRCLE_COLOR_A);
+        
+        imshow(env.name, O);
+        switch(waitKey(10))
+        {
+            case ' ':
+                if(env.status == LIVE)
+                {
+                    live = false;
+                    env.pause();
+                }
+                else
+                {
+                    live = true;
+                    env.resume();
+                }
+                break;
+            case 02:
+                toggle(&swA.dir);
+                swA.trigger();
+                toggle(&swA.dir);
+                break;
+            case 03:
+                swA.trigger();
+                break;
+            default:
+                break;
+        }
+    }
+}
+
+void kalman_random_test()
 {
     double Astart = WIDTH/10, Bstart = WIDTH - Astart;
     kalman_t A, B;
-    kalman_uncertainty_c uncertainty = { VU, BU, SU };
-    Kalman.Initialize(&A, Astart, LS, MIN_V, MAX_V, uncertainty);
-    Kalman.Initialize(&B, Bstart, LS, MIN_V, MAX_V, uncertainty);
+    Kalman.Init(&A, Astart, ACC, VU, SU, LS, MIN_V, MAX_V);
+    Kalman.Init(&B, Bstart, ACC, VU, SU, LS, MIN_V, MAX_V);
     Sweeper swA("Sweeper A", STEPS/2, Astart, Bstart);
     Sweeper swB("Sweeper B", STEPS, Bstart, Astart);
     
@@ -271,7 +331,7 @@ void kalman_test()
         drawReals(O, areal, breal);
         
         imshow(env.name, O);
-        switch(waitKey(10))
+        switch(waitKey(100))
         {
             case ' ':
                 if(env.status == LIVE)

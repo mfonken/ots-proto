@@ -20,10 +20,7 @@
 		3494A05A288B787100489658 /* rho_utility.c in Sources */ = {isa = PBXBuildFile; fileRef = 3494A038288B787100489658 /* rho_utility.c */; };
 		3494A05B288B787100489658 /* rho_core.c in Sources */ = {isa = PBXBuildFile; fileRef = 3494A03B288B787100489658 /* rho_core.c */; };
 		3494A05D288B787100489658 /* rho_capture.c in Sources */ = {isa = PBXBuildFile; fileRef = 3494A03E288B787100489658 /* rho_capture.c */; };
-		3494A05E288B787100489658 /* gmm.c in Sources */ = {isa = PBXBuildFile; fileRef = 3494A046288B787100489658 /* gmm.c */; };
-		3494A05F288B787100489658 /* psm.c in Sources */ = {isa = PBXBuildFile; fileRef = 3494A04C288B787100489658 /* psm.c */; };
 		3494A060288B787100489658 /* fsm.c in Sources */ = {isa = PBXBuildFile; fileRef = 3494A04E288B787100489658 /* fsm.c */; };
-		3494A061288B787100489658 /* hmm.c in Sources */ = {isa = PBXBuildFile; fileRef = 3494A04F288B787100489658 /* hmm.c */; };
 		3494A076288B7A2C00489658 /* rho_drawer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 3494A075288B7A2C00489658 /* rho_drawer.cpp */; };
 		3494A079288B7CAA00489658 /* fps_utility.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 3494A077288B7CA800489658 /* fps_utility.cpp */; };
 		34A7454127E7A84F00EDE4F5 /* ots_combine.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 34A7453F27E7A84F00EDE4F5 /* ots_combine.cpp */; };
@@ -46,6 +43,7 @@
 		34B8AF6227D420B300D76DB2 /* vector3.c in Sources */ = {isa = PBXBuildFile; fileRef = 34B8AF5B27D420B300D76DB2 /* vector3.c */; };
 		34B8AF6327D420B300D76DB2 /* point.c in Sources */ = {isa = PBXBuildFile; fileRef = 34B8AF5E27D420B300D76DB2 /* point.c */; };
 		34B8AF6427D420B300D76DB2 /* quaternion.c in Sources */ = {isa = PBXBuildFile; fileRef = 34B8AF6027D420B300D76DB2 /* quaternion.c */; };
+		34D29F44292EA14C005E43A8 /* rho_generator.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 34D29F43292EA14B005E43A8 /* rho_generator.cpp */; };
 		34E257DF289CBC6B000999F8 /* rho_track.c in Sources */ = {isa = PBXBuildFile; fileRef = 34E257DE289CBC6B000999F8 /* rho_track.c */; };
 		34E3582927D861B100047308 /* webcam_utility.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 34E3582727D861B100047308 /* webcam_utility.cpp */; };
 		34F0ECC327C2C987001B3C57 /* main.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 34F0ECC227C2C987001B3C57 /* main.cpp */; };
@@ -86,7 +84,6 @@
 		3494A02A288B787100489658 /* matvec.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = matvec.c; sourceTree = "<group>"; };
 		3494A02B288B787100489658 /* statistics.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = statistics.c; sourceTree = "<group>"; };
 		3494A02C288B787100489658 /* rho_types.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = rho_types.h; sourceTree = "<group>"; };
-		3494A02D288B787100489658 /* rho_structure.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = rho_structure.h; sourceTree = "<group>"; };
 		3494A030288B787100489658 /* rho_spoof.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = rho_spoof.h; sourceTree = "<group>"; };
 		3494A031288B787100489658 /* kumaraswamy.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = kumaraswamy.h; sourceTree = "<group>"; };
 		3494A032288B787100489658 /* statistics.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = statistics.h; sourceTree = "<group>"; };
@@ -98,16 +95,10 @@
 		3494A03C288B787100489658 /* rho_utility.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = rho_utility.h; sourceTree = "<group>"; };
 		3494A03E288B787100489658 /* rho_capture.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = rho_capture.c; sourceTree = "<group>"; };
 		3494A03F288B787100489658 /* rho_config.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = rho_config.h; sourceTree = "<group>"; };
-		3494A046288B787100489658 /* gmm.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = gmm.c; sourceTree = "<group>"; };
 		3494A047288B787100489658 /* control_types.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = control_types.h; sourceTree = "<group>"; };
 		3494A048288B787100489658 /* fsm.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = fsm.h; sourceTree = "<group>"; };
-		3494A049288B787100489658 /* psm.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = psm.h; sourceTree = "<group>"; };
-		3494A04A288B787100489658 /* hmm.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = hmm.h; sourceTree = "<group>"; };
-		3494A04B288B787100489658 /* gmm.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = gmm.h; sourceTree = "<group>"; };
-		3494A04C288B787100489658 /* psm.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = psm.c; sourceTree = "<group>"; };
 		3494A04D288B787100489658 /* control_structures.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = control_structures.h; sourceTree = "<group>"; };
 		3494A04E288B787100489658 /* fsm.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = fsm.c; sourceTree = "<group>"; };
-		3494A04F288B787100489658 /* hmm.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = hmm.c; sourceTree = "<group>"; };
 		3494A050288B787100489658 /* rho_global.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = rho_global.h; sourceTree = "<group>"; };
 		3494A052288B787100489658 /* rho_master.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = rho_master.h; sourceTree = "<group>"; };
 		3494A053288B787100489658 /* rho_packet.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = rho_packet.h; sourceTree = "<group>"; };
@@ -146,7 +137,7 @@
 		34B8AEE127D413D300D76DB2 /* kalman.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = kalman.cpp; sourceTree = "<group>"; };
 		34B8AEE227D413D300D76DB2 /* gaussian.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = gaussian.hpp; sourceTree = "<group>"; };
 		34B8AEE327D413D300D76DB2 /* kalman.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = kalman.hpp; sourceTree = "<group>"; };
-		34B8AEE627D413D300D76DB2 /* opencv_master.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = opencv_master.h; sourceTree = "<group>"; };
+		34B8AEE627D413D300D76DB2 /* opencv_master.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = opencv_master.hpp; sourceTree = "<group>"; };
 		34B8AEE727D413D300D76DB2 /* unfisheye.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = unfisheye.cpp; sourceTree = "<group>"; };
 		34B8AEE927D413D300D76DB2 /* image_cpp_types.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = image_cpp_types.h; sourceTree = "<group>"; };
 		34B8AEEB27D413D300D76DB2 /* image_config.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = image_config.h; sourceTree = "<group>"; };
@@ -166,6 +157,8 @@
 		34B8AF5E27D420B300D76DB2 /* point.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = point.c; sourceTree = "<group>"; };
 		34B8AF5F27D420B300D76DB2 /* vector3.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = vector3.h; sourceTree = "<group>"; };
 		34B8AF6027D420B300D76DB2 /* quaternion.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = quaternion.c; sourceTree = "<group>"; };
+		34D29F42292EA14A005E43A8 /* rho_generator.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = rho_generator.hpp; sourceTree = "<group>"; };
+		34D29F43292EA14B005E43A8 /* rho_generator.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = rho_generator.cpp; sourceTree = "<group>"; };
 		34E257DD289CBC6B000999F8 /* rho_track.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = rho_track.h; sourceTree = "<group>"; };
 		34E257DE289CBC6B000999F8 /* rho_track.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = rho_track.c; sourceTree = "<group>"; };
 		34E3582327D421B900047308 /* test_config.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = test_config.h; sourceTree = "<group>"; };
@@ -217,6 +210,8 @@
 				34949FFF2883502800489658 /* rho_wrapper.cpp */,
 				3494A074288B7A1A00489658 /* rho_drawer.hpp */,
 				3494A075288B7A2C00489658 /* rho_drawer.cpp */,
+				34D29F42292EA14A005E43A8 /* rho_generator.hpp */,
+				34D29F43292EA14B005E43A8 /* rho_generator.cpp */,
 			);
 			name = rho_wrapper;
 			path = ../../../combine/wrappers/rho_wrapper;
@@ -244,7 +239,6 @@
 				3494A029288B787100489658 /* maths_master.h */,
 				3494A030288B787100489658 /* rho_spoof.h */,
 				3494A02C288B787100489658 /* rho_types.h */,
-				3494A02D288B787100489658 /* rho_structure.h */,
 				3494A031288B787100489658 /* kumaraswamy.h */,
 				3494A033288B787100489658 /* matvec.h */,
 				3494A02A288B787100489658 /* matvec.c */,
@@ -276,12 +270,6 @@
 				3494A047288B787100489658 /* control_types.h */,
 				3494A048288B787100489658 /* fsm.h */,
 				3494A04E288B787100489658 /* fsm.c */,
-				3494A04B288B787100489658 /* gmm.h */,
-				3494A046288B787100489658 /* gmm.c */,
-				3494A04A288B787100489658 /* hmm.h */,
-				3494A04F288B787100489658 /* hmm.c */,
-				3494A049288B787100489658 /* psm.h */,
-				3494A04C288B787100489658 /* psm.c */,
 			);
 			path = psm;
 			sourceTree = "<group>";
@@ -371,7 +359,7 @@
 				34B8AEEB27D413D300D76DB2 /* image_config.h */,
 				34B8AEE927D413D300D76DB2 /* image_cpp_types.h */,
 				34B8AEEC27D413D300D76DB2 /* image_types.h */,
-				34B8AEE627D413D300D76DB2 /* opencv_master.h */,
+				34B8AEE627D413D300D76DB2 /* opencv_master.hpp */,
 				34B8AEED27D413D300D76DB2 /* unfisheye.hpp */,
 				34B8AEE727D413D300D76DB2 /* unfisheye.cpp */,
 				3433ECB92847008700AA34D6 /* fisheye.h */,
@@ -523,14 +511,13 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				3494A061288B787100489658 /* hmm.c in Sources */,
 				34B8AF0327D413D300D76DB2 /* environment.cpp in Sources */,
+				34D29F44292EA14C005E43A8 /* rho_generator.cpp in Sources */,
 				34B105FC27DD2F1600CBD20E /* kinetic.c in Sources */,
 				34A7454127E7A84F00EDE4F5 /* ots_combine.cpp in Sources */,
 				34B8AEFB27D413D300D76DB2 /* serial_wrapper.cpp in Sources */,
 				34B8AF6327D420B300D76DB2 /* point.c in Sources */,
 				3494A079288B7CAA00489658 /* fps_utility.cpp in Sources */,
-				3494A05E288B787100489658 /* gmm.c in Sources */,
 				3488B9102881135F005C1269 /* pid.c in Sources */,
 				34B8AEFA27D413D300D76DB2 /* sercom.c in Sources */,
 				34B1060627DE538500CBD20E /* kinetic_utility.cpp in Sources */,
@@ -540,7 +527,6 @@
 				34B1060327DD9DA700CBD20E /* imu_utility.cpp in Sources */,
 				3494A05B288B787100489658 /* rho_core.c in Sources */,
 				34E3582927D861B100047308 /* webcam_utility.cpp in Sources */,
-				3494A05F288B787100489658 /* psm.c in Sources */,
 				34B8AEFD27D413D300D76DB2 /* gaussian.cpp in Sources */,
 				3494A0032883502800489658 /* rho_structures.cpp in Sources */,
 				34B8AF6127D420B300D76DB2 /* kalman.c in Sources */,

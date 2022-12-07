@@ -7,6 +7,7 @@
 
 #include "ots_combine_demo.hpp"
 #include "unfisheye.hpp"
+#include "rho_generator.hpp"
 #include <format>
 
 using namespace cv;
@@ -80,13 +81,13 @@ void CombineDemo::ShowFrame(bool show_processed)
     while(true)
     {
         if((show_processed && combine->new_processed_frame) || (!show_processed && combine->new_frame))
-        {
-//            LOCK(&combine->frame_mutex)
+        { LOCK(&combine->frame_mutex)
             Mat m;
             if(!combine->frame.empty())
             {
                 fps.Tick();
-                resize(combine->frame, m, Size(), scale, scale, INTER_LINEAR);
+                m = combine->frame.clone();
+//                resize(combine->frame, m, Size(), scale, scale, INTER_LINEAR);
                 putText(m, to_string((int)fps.Get()), Point(3, 13), FONT_HERSHEY_DUPLEX, 0.5, Scalar(255, 255, 100));
                 
 //                // Unfisheye image
@@ -129,11 +130,22 @@ void CombineDemo::TestRho(int rate)
 //    InitUtility(Combine::WEBCAM, rate);
     int n = 1;
     int s = 1;
-    int nframes = 26;
-    Mat m;
+    int nframes = 360; // 26;
+    Mat m, draw;
+    
+    int inc = 2;
+    int r = 10;
+    RhoGenerator gen(FRAME_WIDTH_BASE, FRAME_HEIGHT, Scalar(0, 0, 0));
+    Circle c1(r, Point(FRAME_WIDTH_BASE*0.25, FRAME_HEIGHT*0.25), Scalar(255, 255, 255));
+    Circle c2(r*0.9, Point(FRAME_WIDTH_BASE*0.75, FRAME_HEIGHT*0.75), Scalar(255, 255, 255));
+    Circle c3(r/2, Point(FRAME_WIDTH_BASE*0.65, FRAME_HEIGHT*0.25), Scalar(255, 255, 255));
+    gen.AddShape(&c1);
+    gen.AddShape(&c2);
+//    gen.AddShape(&c3);
+    
 #ifdef USE_RHO
     combine->rho.Init(FRAME_WIDTH_BASE, FRAME_HEIGHT);//combine->wcu.size.width, combine->wcu.size.height);
-    RhoDrawer drawer(&RhoSystem.Variables.Utility, &combine->rho.capture);
+//    RhoDrawer drawer(&RhoSystem.Variables.Utility, &combine->rho.capture, FRAME_WIDTH_BASE, FRAME_HEIGHT);
 #endif
 //    Start();
     while(true)
@@ -141,11 +153,15 @@ void CombineDemo::TestRho(int rate)
         // cv::imread("/Users/matthew/Desktop/PersonalResources/TestImages/frames/single/" + to_string(n++) + ".png");
 //        if(combine->wcu.frame.cols > 0)
         { //LOCK(mutex)
-            int n_ = ceil(n++ / (float)s);
-            resize(cv::imread("/Users/matthew/Desktop/PersonalResources/TestImages/frames/small/" + to_string(n_) + ".png"), m, Size(FRAME_WIDTH_BASE, FRAME_HEIGHT), INTER_NEAREST);
-//            Mat m; // cv::imread("/Users/matthew/Desktop/PersonalResources/TestImages/frames/ellipse/" + to_string(n) + ".png");//
-//            m.at<Vec3b>(1, 1) = Vec3b(255, 255, 255);
-            //
+            int a = MAX(1, ceil(n++ / (float)s));
+            int n_ = MIN(a, nframes);
+            n += inc;
+            
+            gen.Rotate(n_);
+            m = gen.GetFrame(draw);
+//            resize(cv::imread("/Users/matthew/Desktop/PersonalResources/TestImages/frames/ellipse/" + to_string(n_) + ".png"), m, Size(FRAME_WIDTH_BASE, FRAME_HEIGHT), INTER_NEAREST);
+            imshow("source", draw);
+            waitKey(1);
 #ifdef USE_RHO
 //            m = combine->wcu.frame.clone();
 //            resize(combine->wcu.frame, m, Size(size, size));
@@ -158,7 +174,7 @@ void CombineDemo::TestRho(int rate)
             {
 #ifdef USE_RHO
                 combine->rho.Perform( m );
-                drawer.DrawDensityGraph( m );
+                combine->rho.Draw( m );
 #else
                 combine->det.perform(m);
                 combine->det.draw(m);
