@@ -37,7 +37,7 @@ public:
     } combine_utility_rate_t;
     
     CombineDemo(Environment * env, Combine* combine);
-    void Init(combine_utility_rate_t rates[]);
+    void Init(combine_utility_rate_t rates[], int n);
     void Start();
     void Pause();
     pthread_mutex_t* InitUtility(Combine::combine_utility_e name, int rate);

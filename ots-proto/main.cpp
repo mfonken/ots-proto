@@ -15,29 +15,27 @@
 #include "opencv2/core/cvdef.h"
 #include <opencv2/calib3d.hpp>
 
-#define TEST
+//#define TEST
 
 using namespace cv;
 
 int main(int argc, const char * argv[])
 {
-//    kalman_test();
-    
     Environment env("CombineDemo");
     
-    Combine combine(&config, file_name, &imu_channel, &camera_intrinsics );
+    Combine combine(&config, socket_port, &imu_channel, &camera_intrinsics );
     CombineDemo demo(&env, &combine);
     
 #ifdef TEST
 //    demo.Visualizer();
-    demo.TestRho(10);
+//    demo.TestRho(1);
 //    demo.TestIMU(100);
 //    demo.TestWebcam(10);
 //    demo.TestKinetic(20);
-//    demo.TestTracker();
+    demo.TestTracker();
 //    demo.Record(45, 15, 30, "/Users/matthew/Desktop/dev/cam-imu-dataset");
 #else
-    demo.Init(rates);
+    demo.Init(rates, num_utilities);
     demo.Start();
     demo.ShowFrame(true);
 #endif

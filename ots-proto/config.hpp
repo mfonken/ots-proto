@@ -14,6 +14,7 @@
 //#define CAM_HEIGHT 1080
 
 const char * file_name = "/Users/matthew/Desktop/ots-combine.dat";
+const char * socket_port = "1234";
 SERCOM_Channel imu_channel = { -1, "/dev/tty.usbmodem144401", "/dev/tty.usbmodem144201", B115200, CS8, 0.1, 0 };
 
 static int fps = 25;
@@ -36,6 +37,7 @@ static CombineDemo::combine_utility_rate_t rates[] =
     { Combine::COMBINE, fps },
     { Combine::KINETIC, fps },
 };
+static int num_utilities = 4;
 
 
 #endif /* global_config_h */

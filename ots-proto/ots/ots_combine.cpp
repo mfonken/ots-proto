@@ -10,10 +10,10 @@
 using namespace cv;
 using namespace std::placeholders;
 
-Combine::Combine(kinetic_config_t * config, const char * file_name, SERCOM_Channel * imu_channel, camera_intrinsics_t * camera_intrinsics )
+Combine::Combine(kinetic_config_t * config, const char * comm_data, SERCOM_Channel * imu_channel, camera_intrinsics_t * camera_intrinsics )
 :   name("combine"),
     kin(config),
-    comm(SFILE, file_name),
+    comm(COMM_TYPE, comm_data),
     imu(imu_channel),
     new_frame(false),
     new_processed_frame(false),
@@ -24,6 +24,7 @@ Combine::Combine(kinetic_config_t * config, const char * file_name, SERCOM_Chann
     if( pthread_mutex_init(&frame_mutex, NULL) != 0 )
         printf( "mutex init failed\n" );
     
+    comm.write("Connected to ots-combine");
     wcu.OnFrame = std::bind(&Combine::OnFrame, this, _1, _2);
 }
 
@@ -33,7 +34,7 @@ TestInterface* Combine::GetUtility(combine_utility_e name)
     switch(name)
     {
         case COMBINE:
-            utility = this;
+            utility = (TestInterface*)this;
             break;
         case WEBCAM:
             utility = &wcu;
@@ -43,6 +44,9 @@ TestInterface* Combine::GetUtility(combine_utility_e name)
             break;
         case KINETIC:
             utility = &kin;
+            break;
+        case BLOB_DET:
+            utility = &det;
             break;
         default:
             break;
@@ -128,7 +132,7 @@ void Combine::trigger()
     }
 }
 
-void Combine::OnFrame(Mat m, double t_ns)
+void Combine::OnFrame(Mat m, double t_ms)
 {
     LOG_CMB(DEBUG_1, "frame\n");
 #ifdef IMAGE_THRESHOLD

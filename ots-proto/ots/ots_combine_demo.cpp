@@ -11,6 +11,7 @@
 #include <format>
 
 using namespace cv;
+using namespace std::placeholders;
 
 CombineDemo::CombineDemo(Environment * env, Combine* combine)
 {
@@ -20,9 +21,9 @@ CombineDemo::CombineDemo(Environment * env, Combine* combine)
     this->env->addTest( &fps, 1.0 );
 }
 
-void CombineDemo::Init(combine_utility_rate_t rates[Combine::NUM_UTILITIES])
+void CombineDemo::Init(combine_utility_rate_t rates[Combine::NUM_UTILITIES], int n)
 {
-    for(int i = 0; i < Combine::NUM_UTILITIES; i++)
+    for(int i = 0; i < n; i++)
     {
         InitUtility(rates[i].name, rates[i].rate);
     }
@@ -64,17 +65,18 @@ void CombineDemo::HandleKey(char k)
 
 void CombineDemo::ShowWebcam()
 {
+    combine->wcu.OnFrame = NULL;
     while(true)
-    { LOCK(&combine->wcu.mutex)
+    { //LOCK(&combine->wcu.mutex)
         if(!combine->wcu.frame.empty())
             imshow("figure", combine->wcu.frame);
-        waitKey(10);
+        waitKey(1);
     }
 }
 
 void CombineDemo::ShowFrame(bool show_processed)
 {
-    const double scale = 0.75;
+    const double scale = 0.5;
     sleep(1);
     OrienterFunctions.Tare( &combine->kin.orienter );
     
@@ -87,18 +89,11 @@ void CombineDemo::ShowFrame(bool show_processed)
             {
                 fps.Tick();
                 m = combine->frame.clone();
-//                resize(combine->frame, m, Size(), scale, scale, INTER_LINEAR);
+                resize(combine->frame, m, Size(), scale, scale, INTER_LINEAR);
                 putText(m, to_string((int)fps.Get()), Point(3, 13), FONT_HERSHEY_DUPLEX, 0.5, Scalar(255, 255, 100));
-                
-//                // Unfisheye image
-//                Rect crop(m.cols/2 - m.rows/2, 0, m.rows, m.rows);
-//                Mat M(m, crop);
-//                Mat U = Mat(M.rows, M.cols, M.type(), Scalar(255, 255, 255));
-//                invfisheye(M, U);
                 
                 // Draw kinetic position
                 vec3_t p = combine->kin.GetPosition();
-//                p.i = -p.i;
                 double* v = (double*)&p;
                 int x = 70;
                 Scalar rgb[] = { cv::viz::Color::red(), cv::viz::Color::green(), cv::viz::Color::celestial_blue()  };
@@ -130,18 +125,23 @@ void CombineDemo::TestRho(int rate)
 //    InitUtility(Combine::WEBCAM, rate);
     int n = 1;
     int s = 1;
-    int nframes = 360; // 26;
+    int nframes = 26; //360;
     Mat m, draw;
     
-    int inc = 2;
-    int r = 10;
-    RhoGenerator gen(FRAME_WIDTH_BASE, FRAME_HEIGHT, Scalar(0, 0, 0));
-    Circle c1(r, Point(FRAME_WIDTH_BASE*0.25, FRAME_HEIGHT*0.25), Scalar(255, 255, 255));
-    Circle c2(r*0.9, Point(FRAME_WIDTH_BASE*0.75, FRAME_HEIGHT*0.75), Scalar(255, 255, 255));
-    Circle c3(r/2, Point(FRAME_WIDTH_BASE*0.65, FRAME_HEIGHT*0.25), Scalar(255, 255, 255));
-    gen.AddShape(&c1);
-    gen.AddShape(&c2);
+    int inc = 0; //1;
+//    int r = FRAME_WIDTH_BASE * 0.05;
+//    RhoGenerator gen(FRAME_WIDTH_BASE, FRAME_HEIGHT, Scalar(0, 0, 0));
+//    Circle c1(r*0.99, Point(FRAME_WIDTH_BASE*0.25, FRAME_HEIGHT*0.75), Scalar(255, 255, 255));
+//    Circle c2(r, Point(FRAME_WIDTH_BASE*0.75, FRAME_HEIGHT*0.25), Scalar(255, 255, 255));
+//    Circle c3(r*0.5, Point(FRAME_WIDTH_BASE*0.9, FRAME_HEIGHT*0.6), Scalar(255, 255, 255));
+//    Circle c4(r*0.3, Point(FRAME_WIDTH_BASE*0.5, FRAME_HEIGHT*0.9), Scalar(255, 255, 255));
+//    gen.AddShape(&c1);
+//    gen.AddShape(&c2);
 //    gen.AddShape(&c3);
+//    gen.AddShape(&c4);
+//
+//    Circle c5(FRAME_WIDTH_BASE*0.25, Point(FRAME_WIDTH_BASE*0.5, FRAME_HEIGHT*0.5), Scalar(225, 225, 225));
+//    gen.AddShape(&c5);
     
 #ifdef USE_RHO
     combine->rho.Init(FRAME_WIDTH_BASE, FRAME_HEIGHT);//combine->wcu.size.width, combine->wcu.size.height);
@@ -157,9 +157,11 @@ void CombineDemo::TestRho(int rate)
             int n_ = MIN(a, nframes);
             n += inc;
             
-            gen.Rotate(n_);
-            m = gen.GetFrame(draw);
-//            resize(cv::imread("/Users/matthew/Desktop/PersonalResources/TestImages/frames/ellipse/" + to_string(n_) + ".png"), m, Size(FRAME_WIDTH_BASE, FRAME_HEIGHT), INTER_NEAREST);
+//            gen.Rotate((double)(n_));
+//            m = gen.GetFrame(draw);
+            resize(cv::imread("/Users/matthew/Desktop/PersonalResources/TestImages/fade/" + to_string(n_) + ".png"), m, Size(FRAME_WIDTH_BASE, FRAME_HEIGHT), INTER_NEAREST);
+            draw = m.clone();
+            threshold(draw, draw, RhoSystem.Variables.Utility.thresh, 255, THRESH_BINARY);
             imshow("source", draw);
             waitKey(1);
 #ifdef USE_RHO
@@ -173,7 +175,15 @@ void CombineDemo::TestRho(int rate)
             if(m.cols > 0)
             {
 #ifdef USE_RHO
+//                if( n % 2 )
+//                {
+//                    m = Scalar(0, 0, 0);
+////                    combine->rho.backgrounding_event = n % 2;
+//                }
+//                circle(m, Point(FRAME_WIDTH_BASE, FRAME_HEIGHT)*0.5, 50, Scalar(150, 150, 150), -1);
                 combine->rho.Perform( m );
+                threshold( m, draw, RhoSystem.Variables.Utility.thresh, 255, 0 );
+                m &= draw;
                 combine->rho.Draw( m );
 #else
                 combine->det.perform(m);
@@ -194,13 +204,6 @@ void CombineDemo::TestRho(int rate)
         }
         if(n > nframes * s) n = 1;
     }
-}
-
-void CombineDemo::TestWebcam(int rate)
-{
-    pthread_mutex_t * mutex = InitUtility(Combine::WEBCAM, rate);
-    Start();
-    ShowWebcam();
 }
 
 void CombineDemo::TestIMU(int rate)
@@ -225,6 +228,13 @@ void CombineDemo::TestIMU(int rate)
 //        }
     }
 //    sleep(1);
+}
+
+void CombineDemo::TestWebcam(int rate)
+{
+    pthread_mutex_t * mutex = InitUtility(Combine::WEBCAM, rate);
+    Start();
+    ShowWebcam();
 }
 
 void CombineDemo::TestKinetic(int rate)
@@ -260,6 +270,10 @@ void CombineDemo::TestKinetic(int rate)
 
 void CombineDemo::TestTracker(int rate)
 {
+    InitUtility(Combine::WEBCAM, rate-1);
+    InitUtility(Combine::BLOB_DET, rate);
+    Start();
+    ShowWebcam();
     vector<Point2f> pts = { Point2f(0, 0) };
     combine->det.tracker.Update(pts);
 }
@@ -338,18 +352,6 @@ void CombineDemo::Record(int seconds, int webcam_rate, int imu_rate, string path
     }
     printf("Ran %d cycles\n", i);
 }
-
-//void CombineDemo::OnFrame(Mat img, double timestamp_ms)
-//{
-//    if(img_path.length() == 0 || start_ms == 0) return;
-////    img = frame.clone();
-//    std::stringstream img_s;
-//    long img_timestamp_ns = (long)( ( combine->wcu.frame_time_ms - start_ms ) * 1.0e6 );
-//    img_s << img_path << "/" << img_timestamp_ns << ".png";
-////    putText(img, img_s.str(), Point(2, 20), 1, FONT_HERSHEY_DUPLEX, Scalar(255, 255, 255));
-////            imwrite(img_s.str(), img);
-//    printf("img: %s\n", img_s.str().c_str());
-//}
 
 void CombineDemo::Visualizer(int rate)
 {

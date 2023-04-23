@@ -19,9 +19,10 @@
 #include "rho_wrapper.hpp"
 #include "rho_drawer.hpp"
 
-#define CAMERA_ID 0 // 1
+#define CAMERA_ID 0
 
-#define USE_RHO
+//#define USE_RHO
+#define COMM_TYPE SOCKET // SFILE // 
 //#define IMAGE_THRESHOLD 250
 
 #define DEBUG_CMB
@@ -47,6 +48,7 @@ public:
         KINETIC,
         COMBINE,
         VIEWER,
+        BLOB_DET,
         NUM_UTILITIES,
     } combine_utility_e;
     
@@ -64,11 +66,11 @@ public:
     IMUUtility imu;
     KineticUtility kin;
     BlobDetector det;
-    TrackerUtility tracker;
+//    TrackerUtility tracker;
     RhoWrapper rho;
     RhoDrawer rho_drawer;
     
-    Combine(kinetic_config_t * config, const char * file_name, SERCOM_Channel * imu_channel, camera_intrinsics_t * camera_intrinsics );
+    Combine(kinetic_config_t * config, const char * comm_data, SERCOM_Channel * imu_channel, camera_intrinsics_t * camera_intrinsics );
 
     TestInterface* GetUtility(combine_utility_e name);
     void UpdateIMUData();
